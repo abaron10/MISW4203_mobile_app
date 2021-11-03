@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.vinilos.R
+import com.example.vinilos.network.AlbumServiceAdapter
+import com.example.vinilos.repositories.AlbumRepository
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +29,14 @@ class AlbumsFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+
+        this.activity?.let {
+            AlbumServiceAdapter.getInstance(it.application).getAlbums({
+                println("Buenas")
+            }, {
+                println("Error")
+            })
         }
     }
 

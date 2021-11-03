@@ -2,4 +2,12 @@
     <string name="app_name">Vinilos</string>
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_albums">Albums</string>
+    <string name="main_quote">\"People Aren\'t Hearing All the Music\". Dr Dre</string>
+    <string name="main_description">We are a platform that provides the amateur collector with the possibility of acquiring new or used vinyl records, either through purchase or exchange. Become one of our collectors and sell or trade the records you have available.</string>
+    <string name="main_sign_as_user">Sign in as user</string>
+    <string name="main_sign_as_collector">Sign in as collector</string>
+    <string name="vinilos">DjVinilos</string>
+    <string name="albums_search">Search album</string>
 </resources>

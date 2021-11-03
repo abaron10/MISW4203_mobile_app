@@ -5,10 +5,10 @@
         >
         <item android:id="@+id/nav_item_one"
             android:icon="@drawable/ic_home_dark"
-            android:title="Home"/>
+            android:title="@string/menu_home"/>
 
         <item android:id="@+id/nav_item_two"
             android:icon="@drawable/ic_album_dark"
-            android:title="Albums"/>
+            android:title="@string/menu_albums"/>
     </group>
 </menu>

@@ -10,7 +10,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.vinilos.R
 import com.example.vinilos.ui.fragments.AlbumsFragment
-import com.example.vinilos.ui.fragments.HomeFragment
 import com.google.android.material.navigation.NavigationView
 
 class MenuActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {

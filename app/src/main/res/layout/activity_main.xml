@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="DjVinilos"
+        android:text="@string/vinilos"
         android:textSize="30sp"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="10dp"
@@ -37,7 +37,7 @@
         android:id="@+id/quote_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="&quot;People Aren't Hearing All the Music&quot;. Dr Dre"
+        android:text="@string/main_quote"
         android:textAlignment="center"
         android:textSize="25sp"
         android:padding="15dp"
@@ -52,7 +52,7 @@
         app:cornerRadius="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="We are a platform that provides the amateur collector with the possibility of acquiring new or used vinyl records, either through purchase or exchange. Become one of our collectors and sell or trade the records you have available."
+        android:text="@string/main_description"
         android:textAlignment="center"
         android:textSize="18sp"
         android:padding="20dp"
@@ -82,7 +82,7 @@
             android:layout_height="90dp"
             android:layout_weight="1"
             android:backgroundTint="@color/vinilos_pink"
-            android:text="Sign in as user"
+            android:text="@string/main_sign_as_user"
             android:textSize="12sp"
             android:textColor="@color/white"/>
 
@@ -97,7 +97,7 @@
             android:layout_height="90dp"
             android:layout_weight="1"
             android:backgroundTint="@color/vinilos_pink"
-            android:text="Sign in as collector"
+            android:text="@string/main_sign_as_collector"
             android:textSize="12sp"
             android:textColor="@color/white"/>
     </LinearLayout>
