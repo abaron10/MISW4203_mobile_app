@@ -17,19 +17,25 @@ class AlbumViewModel(application: Application): AndroidViewModel(application) {
     private var _isNetworkErrorShown = MutableLiveData<Boolean>(false)
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
+    private val _isLoading = MutableLiveData<Boolean>(true)
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
 
     init {
         refreshDataFromNetwork()
     }
 
     private fun refreshDataFromNetwork() {
+        _isLoading.value = true
         albumsRepository.refreshData({
             _albums.postValue(it)
             initialAlbums = it
             _eventNetworkError.value = false
             _isNetworkErrorShown.value = false
+            _isLoading.value = false
         },{
             _eventNetworkError.value = true
+            _isLoading.value = false
         })
     }
 

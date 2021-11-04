@@ -36,7 +36,7 @@ class AlbumsAdapter(var context: Context) : RecyclerView.Adapter<AlbumsAdapter.A
       it.album = albums[position]
     }
     holder.viewDataBinding.root.setOnClickListener {
-      Toast.makeText(it.context, "Buenas", Toast.LENGTH_SHORT).show()
+      Toast.makeText(it.context, albums[position].name, Toast.LENGTH_SHORT).show()
     }
   }
 
