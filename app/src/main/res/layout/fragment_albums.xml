@@ -25,6 +25,7 @@
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_box_field"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:drawableRight="@drawable/ic_search_dark"
@@ -34,7 +35,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/album_recycler_view"
                 android:layout_margin="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

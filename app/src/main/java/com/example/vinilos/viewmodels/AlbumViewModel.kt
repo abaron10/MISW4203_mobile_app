@@ -8,6 +8,7 @@ import com.example.vinilos.repositories.AlbumRepository
 class AlbumViewModel(application: Application): AndroidViewModel(application) {
     private val albumsRepository = AlbumRepository(application)
     private val _albums = MutableLiveData<List<Album>>()
+    private var initialAlbums: List<Album> = emptyList()
     val albums: LiveData<List<Album>>
         get() = _albums
     private var _eventNetworkError = MutableLiveData<Boolean>(false)
@@ -24,11 +25,22 @@ class AlbumViewModel(application: Application): AndroidViewModel(application) {
     private fun refreshDataFromNetwork() {
         albumsRepository.refreshData({
             _albums.postValue(it)
+            initialAlbums = it
             _eventNetworkError.value = false
             _isNetworkErrorShown.value = false
         },{
             _eventNetworkError.value = true
         })
+    }
+
+    fun filterByAlbumName(name: String) {
+        var filteredList = mutableListOf<Album>()
+        for(album in this.initialAlbums) {
+            if(album.name.lowercase().startsWith(name.lowercase())) {
+                filteredList.add(album)
+            }
+        }
+        _albums.postValue(filteredList)
     }
 
     fun onNetworkErrorShown() {

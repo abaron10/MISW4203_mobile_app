@@ -8,39 +8,47 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.vinilos.databinding.AlbumItemLayoutBinding
 import com.example.vinilos.models.Album
 
-class AlbumsAdapter(var context: Context) : RecyclerView.Adapter<AlbumsAdapter.ViewHolder>() {
+class AlbumsAdapter(var context: Context) : RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder>() {
 
-  var dataList = emptyList<Album>()
+  var albums :List<Album> = emptyList()
+    set(value) {
+      field = value
+      notifyDataSetChanged()
+    }
 
-  internal fun setDataList(dataList: List<Album>) {
-    this.dataList = dataList
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
+    val withDataBinding: AlbumItemLayoutBinding = DataBindingUtil.inflate(
+      LayoutInflater.from(parent.context),
+      AlbumViewHolder.LAYOUT,
+      parent,
+      false)
+    return AlbumViewHolder(withDataBinding)
   }
 
-  class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var albumImage: ImageView
-    var albumName: TextView
-
-    init {
-      albumImage = itemView.findViewById(R.id.album_item_image)
-      albumName = itemView.findViewById(R.id.album_item_name)
-      itemView.setOnClickListener {
-        Toast.makeText(it.context, "Buenas", Toast.LENGTH_SHORT).show()
-      }
+  override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
+    holder.viewDataBinding.also {
+      it.album = albums[position]
+    }
+    holder.viewDataBinding.root.setOnClickListener {
+      Toast.makeText(it.context, "Buenas", Toast.LENGTH_SHORT).show()
     }
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumsAdapter.ViewHolder {
-    var view = LayoutInflater.from(parent.context).inflate(R.layout.album_item_layout, parent, false)
-    return ViewHolder(view)
+  override fun getItemCount(): Int {
+    return albums.size
   }
 
-  override fun onBindViewHolder(holder: AlbumsAdapter.ViewHolder, position: Int) {
-    var data = dataList[position]
-    holder.albumName.text = data.description
+  class AlbumViewHolder(val viewDataBinding: AlbumItemLayoutBinding) :
+    RecyclerView.ViewHolder(viewDataBinding.root) {
+    companion object {
+      @LayoutRes
+      val LAYOUT = R.layout.album_item_layout
+    }
   }
-
-  override fun getItemCount() = dataList.size
 }
