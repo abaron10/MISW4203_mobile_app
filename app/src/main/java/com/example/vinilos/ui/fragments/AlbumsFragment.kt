@@ -44,6 +44,7 @@ class AlbumsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAlbumsBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
         val view = binding.root
         albumsAdapter = AlbumsAdapter(activity!!.applicationContext)
         return view
@@ -69,6 +70,9 @@ class AlbumsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val activity = requireNotNull(this.activity)
         viewModel = ViewModelProvider(this, AlbumViewModel.Factory(activity.application)).get(AlbumViewModel::class.java)
+        binding.also {
+            it.viewModel = viewModel
+        }
         viewModel.albums.observe(viewLifecycleOwner, Observer<List<Album>> {
             it.apply {
                 albumsAdapter.albums = this

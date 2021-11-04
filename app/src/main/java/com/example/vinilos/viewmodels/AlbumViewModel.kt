@@ -26,7 +26,7 @@ class AlbumViewModel(application: Application): AndroidViewModel(application) {
     }
 
     private fun refreshDataFromNetwork() {
-        _isLoading.value = true
+        //_isLoading.value = true
         albumsRepository.refreshData({
             _albums.postValue(it)
             initialAlbums = it
