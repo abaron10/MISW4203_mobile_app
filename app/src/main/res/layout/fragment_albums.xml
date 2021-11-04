@@ -16,7 +16,7 @@
         android:background="@color/vinilos_dark_gray">
 
         <ScrollView
-            android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.isLoading || viewModel.isNetworkErrorShown ? View.GONE : View.VISIBLE}"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -55,7 +55,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
-            android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.isLoading || viewModel.isNetworkErrorShown ? View.GONE : View.VISIBLE}"
             app:backgroundTint="@color/vinilos_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
             android:layout_height="match_parent"
             >
             <LinearLayout
-                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                android:visibility="@{viewModel.isNetworkErrorShown ? View.VISIBLE : View.GONE}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:textSize="20sp"
-                    android:text="There was an error loading the data"
+                    android:text="@string/network_error"
                     android:layout_marginHorizontal="20dp"
                     android:textColor="@color/white"/>
 
@@ -126,6 +126,7 @@
                     android:layout_height="10dp" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_try_again"
                     android:layout_width="wrap_content"
                     android:layout_height="60dp"
                     android:text="@string/try_again"

@@ -11,9 +11,6 @@ class AlbumViewModel(application: Application): AndroidViewModel(application) {
     private var initialAlbums: List<Album> = emptyList()
     val albums: LiveData<List<Album>>
         get() = _albums
-    private var _eventNetworkError = MutableLiveData<Boolean>(false)
-    val eventNetworkError: LiveData<Boolean>
-        get() = _eventNetworkError
     private var _isNetworkErrorShown = MutableLiveData<Boolean>(false)
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
@@ -25,16 +22,15 @@ class AlbumViewModel(application: Application): AndroidViewModel(application) {
         refreshDataFromNetwork()
     }
 
-    private fun refreshDataFromNetwork() {
-        //_isLoading.value = true
+    fun refreshDataFromNetwork() {
+        _isLoading.value = true
+        _isNetworkErrorShown.value = false
         albumsRepository.refreshData({
             _albums.postValue(it)
             initialAlbums = it
-            _eventNetworkError.value = false
-            _isNetworkErrorShown.value = false
             _isLoading.value = false
         },{
-            _eventNetworkError.value = true
+            _isNetworkErrorShown.value = true
             _isLoading.value = false
         })
     }
@@ -47,10 +43,6 @@ class AlbumViewModel(application: Application): AndroidViewModel(application) {
             }
         }
         _albums.postValue(filteredList)
-    }
-
-    fun onNetworkErrorShown() {
-        _isNetworkErrorShown.value = true
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

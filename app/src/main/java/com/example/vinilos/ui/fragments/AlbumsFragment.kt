@@ -19,6 +19,7 @@ import com.example.vinilos.adapters.AlbumsAdapter
 import com.example.vinilos.databinding.FragmentAlbumsBinding
 import com.example.vinilos.models.Album
 import com.example.vinilos.viewmodels.AlbumViewModel
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 
@@ -38,6 +39,7 @@ class AlbumsFragment : Fragment() {
     private lateinit var albumsAdapter: AlbumsAdapter
     private lateinit var albumRecyclerView: RecyclerView
     private lateinit var albumInputText: TextInputEditText
+    private lateinit var btnTryAgain: MaterialButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +57,7 @@ class AlbumsFragment : Fragment() {
         albumRecyclerView.layoutManager = GridLayoutManager(activity!!.applicationContext,2)
         albumRecyclerView.adapter = albumsAdapter
         albumInputText = binding.searchBoxField
+        btnTryAgain = binding.btnTryAgain
         albumInputText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
@@ -64,6 +67,10 @@ class AlbumsFragment : Fragment() {
                 viewModel.filterByAlbumName(s.toString())
             }
         })
+
+        btnTryAgain.setOnClickListener {
+            viewModel.refreshDataFromNetwork()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -78,20 +85,10 @@ class AlbumsFragment : Fragment() {
                 albumsAdapter.albums = this
             }
         })
-        viewModel.eventNetworkError.observe(viewLifecycleOwner, Observer<Boolean> { isNetworkError ->
-            if (isNetworkError) onNetworkError()
-        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun onNetworkError() {
-        if(!viewModel.isNetworkErrorShown.value!!) {
-            Toast.makeText(activity, "Network Error", Toast.LENGTH_LONG).show()
-            viewModel.onNetworkErrorShown()
-        }
     }
 }
