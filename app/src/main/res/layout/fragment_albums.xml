@@ -141,6 +141,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/no_albums_text"
                 android:visibility="@{viewModel.isLoading || viewModel.isNetworkErrorShown || viewModel.albums.size() > 0 ? View.GONE : View.VISIBLE}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
