@@ -10,4 +10,8 @@
     <string name="main_sign_as_collector">Sign in as collector</string>
     <string name="vinilos">DjVinilos</string>
     <string name="albums_search">Search album</string>
+    <string name="try_again">Try again</string>
+    <string name="network_error">There was an error loading the data</string>
+    <string name="loading">Loading</string>
+    <string name="empty_albums">No albums</string>
 </resources>
