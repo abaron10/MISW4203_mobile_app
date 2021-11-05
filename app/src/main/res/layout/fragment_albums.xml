@@ -24,7 +24,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/floating_add_button"
         app:backgroundTint="@color/vinilos_green"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.vinilos.R
 import com.example.vinilos.network.AlbumServiceAdapter
 import com.example.vinilos.repositories.AlbumRepository
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +24,8 @@ private const val ARG_PARAM2 = "param2"
 class AlbumsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var userType: String? = null
+    private lateinit var floatingButton: FloatingActionButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +48,15 @@ class AlbumsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_albums, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        floatingButton = view.findViewById(R.id.floating_add_button)
+        if (userType?.equals("user") == true){
+            floatingButton.hide()
+        } else {
+            floatingButton.show()
+        }
     }
 
     companion object {
