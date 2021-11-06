@@ -17,11 +17,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class AlbumsTest {
+class ArtistsTest {
     @get: Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
-    fun goToAlbumsView() {
+    fun goToArtistView() {
         Espresso.onView(ViewMatchers.withId(R.id.btn_sign_as_user)).check(
             ViewAssertions.matches(ViewMatchers.isDisplayed())
         )
@@ -34,27 +34,27 @@ class AlbumsTest {
             DrawerActions.open()
         )
         Espresso.onView(ViewMatchers.withId(R.id.nav_view)).perform(
-            NavigationViewActions.navigateTo(R.id.nav_item_two)
+            NavigationViewActions.navigateTo(R.id.nav_item_three)
         )
         Thread.sleep(5000);
     }
 
     @Test
-    fun test_get_albums() {
-        goToAlbumsView()
+    fun test_get_artist() {
+        goToArtistView()
 
         Espresso.onView(
             CoreMatchers.allOf(
-                ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("A Night at the Opera")
+                ViewMatchers.withId(R.id.artist_item_name),
+                ViewMatchers.withText("Rubén Blades Bellido de Luna")
             )
         ).check(
             ViewAssertions.matches(ViewMatchers.isDisplayed())
         )
         Espresso.onView(
             CoreMatchers.allOf(
-                ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("Tagopia")
+                ViewMatchers.withId(R.id.artist_item_name),
+                ViewMatchers.withText("Rubén Blades Bellido de Luna")
             )
         ).check(
             ViewAssertions.matches(ViewMatchers.isDisplayed())
@@ -62,24 +62,24 @@ class AlbumsTest {
     }
 
     @Test
-    fun test_get_albums_filter_existing_album() {
-        goToAlbumsView()
+    fun test_get_artist_filter_existing_artist() {
 
+        goToArtistView()
         Espresso.onView(ViewMatchers.withId(R.id.search_box_field)).perform(
-            ViewActions.click(), ViewActions.replaceText("A Night at the Opera")
+            ViewActions.click(), ViewActions.replaceText("Rubén Blades Bellido de Luna")
         )
-        Thread.sleep(5000);
+        Thread.sleep(7000);
         Espresso.onView(
             CoreMatchers.allOf(
-                ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("A Night at the Opera")
+                ViewMatchers.withId(R.id.artist_item_name),
+                ViewMatchers.withText("Rubén Blades Bellido de Luna")
             )
         ).check(
             ViewAssertions.matches(ViewMatchers.isDisplayed())
         )
         Espresso.onView(
             CoreMatchers.allOf(
-                ViewMatchers.withId(R.id.album_item_name),
+                ViewMatchers.withId(R.id.artist_item_name),
                 ViewMatchers.withText("Tagopia")
             )
         ).check(
@@ -88,30 +88,30 @@ class AlbumsTest {
     }
 
     @Test
-    fun test_get_albums_filter_non_existing_album() {
-        goToAlbumsView()
+    fun test_get_artists_filter_non_existing_artist() {
 
+        goToArtistView()
         Espresso.onView(ViewMatchers.withId(R.id.search_box_field)).perform(
             ViewActions.click(), ViewActions.replaceText("Random non existing text")
         )
         Thread.sleep(5000);
         Espresso.onView(
             CoreMatchers.allOf(
-                ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("A Night at the Opera")
+                ViewMatchers.withId(R.id.artist_item_name),
+                ViewMatchers.withText("Rubén Blades Bellido de Luna")
             )
         ).check(
             ViewAssertions.doesNotExist()
         )
         Espresso.onView(
             CoreMatchers.allOf(
-                ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("Tagopia")
+                ViewMatchers.withId(R.id.artist_item_name),
+                ViewMatchers.withText("Rubén Blades Bellido de Luna")
             )
         ).check(
             ViewAssertions.doesNotExist()
         )
-        Espresso.onView(ViewMatchers.withId(R.id.no_albums_text)).check(
+        Espresso.onView(ViewMatchers.withId(R.id.no_artist_text)).check(
             ViewAssertions.matches(ViewMatchers.isDisplayed())
         )
     }
