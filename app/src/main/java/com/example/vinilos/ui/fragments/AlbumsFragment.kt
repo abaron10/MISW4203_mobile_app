@@ -22,7 +22,6 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class AlbumsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var userType: String? = null
     private lateinit var floatingButton: FloatingActionButton
 
@@ -56,6 +55,13 @@ class AlbumsFragment : Fragment() {
             floatingButton.hide()
         } else {
             floatingButton.show()
+        }
+
+        floatingButton.setOnClickListener {
+            val transaction = this.activity?.supportFragmentManager?.beginTransaction()
+            transaction?.replace(R.id.frame_layout, CreateAlbumFragment())
+            transaction?.disallowAddToBackStack()
+            transaction?.commit()
         }
     }
 

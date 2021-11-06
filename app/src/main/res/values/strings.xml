@@ -10,4 +10,11 @@
     <string name="main_sign_as_collector">Sign in as collector</string>
     <string name="vinilos">DjVinilos</string>
     <string name="albums_search">Search album</string>
+    <string name="album_name">Album name</string>
+    <string name="album_cover_image_url">Cover image url</string>
+    <string name="album_release_date">Release date</string>
+    <string name="album_description">Description</string>
+    <string name="album_genre">Genre</string>
+    <string name="album_record_label">Record label</string>
+    <string name="add_album">Add album</string>
 </resources>

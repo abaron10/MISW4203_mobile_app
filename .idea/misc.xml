@@ -5,7 +5,10 @@
       <map>
         <entry key="../../../layout/custom_preview.xml" value="0.15572916666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15625" />
+        <entry key="app/src/main/res/layout/activity_menu.xml" value="0.19947916666666668" />
         <entry key="app/src/main/res/layout/fragment_albums.xml" value="0.15625" />
+        <entry key="app/src/main/res/layout/fragment_create_album.xml" value="0.4378766634658537" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.18697916666666667" />
       </map>
     </option>
   </component>
