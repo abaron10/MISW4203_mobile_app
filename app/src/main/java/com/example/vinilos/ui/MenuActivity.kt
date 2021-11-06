@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.vinilos.R
 import com.example.vinilos.ui.fragments.AlbumsFragment
+import com.example.vinilos.ui.fragments.CollectorsFragment
 import com.google.android.material.navigation.NavigationView
 
 class MenuActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -64,6 +65,7 @@ class MenuActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         when(item.itemId) {
             R.id.nav_item_one -> goToHome()
             R.id.nav_item_two -> replaceFragment(AlbumsFragment(), item.title.toString())
+            R.id.nav_item_three -> replaceFragment(CollectorsFragment(), item.title.toString())
         }
         drawer.closeDrawer(GravityCompat.START)
         return true

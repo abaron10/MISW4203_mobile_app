@@ -14,4 +14,6 @@
     <string name="network_error">There was an error loading the data</string>
     <string name="loading">Loading</string>
     <string name="empty_albums">No albums</string>
+    <string name="collectors_search">Search collector</string>
+    <string name="empty_collectors">No collectors</string>
 </resources>
