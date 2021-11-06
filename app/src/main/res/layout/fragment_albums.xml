@@ -55,7 +55,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_add_button"
-            android:visibility="@{viewModel.isLoading || viewModel.isNetworkErrorShown ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.isUser || viewModel.isLoading || viewModel.isNetworkErrorShown ? View.GONE : View.VISIBLE}"
             app:backgroundTint="@color/vinilos_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -84,12 +84,6 @@ class AlbumsFragment : Fragment() {
         }
 
         floatingButton = view.findViewById(R.id.floating_add_button)
-        if (userType?.equals("user") == true){
-            floatingButton.hide()
-        } else {
-            floatingButton.show()
-        }
-
         floatingButton.setOnClickListener {
             val transaction = this.activity?.supportFragmentManager?.beginTransaction()
             transaction?.replace(R.id.frame_layout, CreateAlbumFragment())
@@ -102,6 +96,7 @@ class AlbumsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val activity = requireNotNull(this.activity)
         viewModel = ViewModelProvider(this, AlbumViewModel.Factory(activity.application)).get(AlbumViewModel::class.java)
+        viewModel.isUser = userType?.equals("user") == true
         binding.also {
             it.viewModel = viewModel
         }
@@ -119,9 +114,6 @@ class AlbumsFragment : Fragment() {
 
     companion object {
         /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
          * @param userType User tpye.
          * @return A new instance of fragment AlbumsFragment.
          */

@@ -7,6 +7,7 @@ import com.example.vinilos.repositories.AlbumRepository
 
 class AlbumViewModel(application: Application): AndroidViewModel(application) {
     private val albumsRepository = AlbumRepository(application)
+    var isUser: Boolean = true
     private val _albums = MutableLiveData<List<Album>>()
     private var initialAlbums: List<Album> = emptyList()
     val albums: LiveData<List<Album>>
