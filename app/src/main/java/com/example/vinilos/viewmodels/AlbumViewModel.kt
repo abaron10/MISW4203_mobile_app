@@ -8,31 +8,41 @@ import com.example.vinilos.repositories.AlbumRepository
 class AlbumViewModel(application: Application): AndroidViewModel(application) {
     private val albumsRepository = AlbumRepository(application)
     private val _albums = MutableLiveData<List<Album>>()
+    private var initialAlbums: List<Album> = emptyList()
     val albums: LiveData<List<Album>>
         get() = _albums
-    private var _eventNetworkError = MutableLiveData<Boolean>(false)
-    val eventNetworkError: LiveData<Boolean>
-        get() = _eventNetworkError
     private var _isNetworkErrorShown = MutableLiveData<Boolean>(false)
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
+    private val _isLoading = MutableLiveData<Boolean>(true)
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
 
     init {
         refreshDataFromNetwork()
     }
 
-    private fun refreshDataFromNetwork() {
+    fun refreshDataFromNetwork() {
+        _isLoading.value = true
+        _isNetworkErrorShown.value = false
         albumsRepository.refreshData({
             _albums.postValue(it)
-            _eventNetworkError.value = false
-            _isNetworkErrorShown.value = false
+            initialAlbums = it
+            _isLoading.value = false
         },{
-            _eventNetworkError.value = true
+            _isNetworkErrorShown.value = true
+            _isLoading.value = false
         })
     }
 
-    fun onNetworkErrorShown() {
-        _isNetworkErrorShown.value = true
+    fun filterByAlbumName(name: String) {
+        var filteredList = mutableListOf<Album>()
+        for(album in this.initialAlbums) {
+            if(album.name.lowercase().startsWith(name.lowercase())) {
+                filteredList.add(album)
+            }
+        }
+        _albums.postValue(filteredList)
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

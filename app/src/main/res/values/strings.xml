@@ -17,4 +17,8 @@
     <string name="album_genre">Genre</string>
     <string name="album_record_label">Record label</string>
     <string name="add_album">Add album</string>
+    <string name="try_again">Try again</string>
+    <string name="network_error">There was an error loading the data</string>
+    <string name="loading">Loading</string>
+    <string name="empty_albums">No albums</string>
 </resources>
