@@ -4,6 +4,7 @@
     <string name="navigation_drawer_close">Close</string>
     <string name="menu_home">Home</string>
     <string name="menu_albums">Albums</string>
+    <string name="menu_artists">Artists</string>
     <string name="main_quote">\"People Aren\'t Hearing All the Music\". Dr Dre</string>
     <string name="main_description">We are a platform that provides the amateur collector with the possibility of acquiring new or used vinyl records, either through purchase or exchange. Become one of our collectors and sell or trade the records you have available.</string>
     <string name="main_sign_as_user">Sign in as user</string>
@@ -17,8 +18,10 @@
     <string name="album_genre">Genre</string>
     <string name="album_record_label">Record label</string>
     <string name="add_album">Add album</string>
+    <string name="artist_search">Search artist</string>
     <string name="try_again">Try again</string>
     <string name="network_error">There was an error loading the data</string>
     <string name="loading">Loading</string>
     <string name="empty_albums">No albums</string>
+    <string name="empty_artist">No artists</string>
 </resources>

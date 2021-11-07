@@ -1,7 +1,6 @@
 package com.example.vinilos.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -10,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.vinilos.R
 import com.example.vinilos.ui.fragments.AlbumsFragment
+import com.example.vinilos.ui.fragments.ArtistFragment
 import com.google.android.material.navigation.NavigationView
 
 class MenuActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -67,6 +67,7 @@ class MenuActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         when(item.itemId) {
             R.id.nav_item_one -> goToHome()
             R.id.nav_item_two -> replaceFragment(AlbumsFragment.newInstance(userType), item.title.toString())
+            R.id.nav_item_three -> replaceFragment(ArtistFragment(), item.title.toString())
         }
         drawer.closeDrawer(GravityCompat.START)
         return true
