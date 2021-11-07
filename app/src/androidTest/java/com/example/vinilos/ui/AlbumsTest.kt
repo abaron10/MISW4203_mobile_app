@@ -11,8 +11,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.vinilos.R
 import org.hamcrest.CoreMatchers
-import org.hamcrest.EasyMock2Matchers.equalTo
-import org.hamcrest.Matcher
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
