@@ -3,15 +3,15 @@ package com.example.vinilos.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.vinilos.models.Album
-import com.example.vinilos.repositories.AlbumRepository
+import com.example.vinilos.models.Artist
+import com.example.vinilos.repositories.ArtistRepository
 
-class AlbumViewModel(application: Application): AndroidViewModel(application) {
-    private val albumsRepository = AlbumRepository(application)
-    var isUser: Boolean = true
-    private val _albums = MutableLiveData<List<Album>>()
-    private var initialAlbums: List<Album> = emptyList()
-    val albums: LiveData<List<Album>>
-        get() = _albums
+class ArtistViewModel(application: Application): AndroidViewModel(application) {
+    private val artistRepository = ArtistRepository(application)
+    private val _artist = MutableLiveData<List<Artist>>()
+    private var initialArtist: List<Artist> = emptyList()
+    val artist: LiveData<List<Artist>>
+        get() = _artist
     private var _isNetworkErrorShown = MutableLiveData<Boolean>(false)
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
@@ -26,9 +26,9 @@ class AlbumViewModel(application: Application): AndroidViewModel(application) {
     fun refreshDataFromNetwork() {
         _isLoading.value = true
         _isNetworkErrorShown.value = false
-        albumsRepository.refreshData({
-            _albums.postValue(it)
-            initialAlbums = it
+        artistRepository.refreshData({
+            _artist.postValue(it)
+            initialArtist = it
             _isLoading.value = false
         },{
             _isNetworkErrorShown.value = true
@@ -36,21 +36,21 @@ class AlbumViewModel(application: Application): AndroidViewModel(application) {
         })
     }
 
-    fun filterByAlbumName(name: String) {
-        var filteredList = mutableListOf<Album>()
-        for(album in this.initialAlbums) {
-            if(album.name.lowercase().startsWith(name.lowercase())) {
-                filteredList.add(album)
+    fun filterByArtistName(name: String) {
+        var filteredList = mutableListOf<Artist>()
+        for(artist in this.initialArtist) {
+            if(artist.name.lowercase().startsWith(name.lowercase())) {
+                filteredList.add(artist)
             }
         }
-        _albums.postValue(filteredList)
+        _artist.postValue(filteredList)
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(AlbumViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(ArtistViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return AlbumViewModel(app) as T
+                return ArtistViewModel(app) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }

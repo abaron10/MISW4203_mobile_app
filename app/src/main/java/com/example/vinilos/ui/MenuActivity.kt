@@ -1,7 +1,6 @@
 package com.example.vinilos.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -11,16 +10,20 @@ import androidx.fragment.app.Fragment
 import com.example.vinilos.R
 import com.example.vinilos.ui.fragments.AlbumsFragment
 import com.example.vinilos.ui.fragments.CollectorsFragment
+import com.example.vinilos.ui.fragments.ArtistFragment
 import com.google.android.material.navigation.NavigationView
 
 class MenuActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawer: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var navigationView: NavigationView
+    private lateinit var userType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
+
+        userType = intent.getStringExtra("userType").toString()
 
         drawer = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.nav_view)
@@ -64,8 +67,9 @@ class MenuActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         item.isChecked = true
         when(item.itemId) {
             R.id.nav_item_one -> goToHome()
-            R.id.nav_item_two -> replaceFragment(AlbumsFragment(), item.title.toString())
-            R.id.nav_item_three -> replaceFragment(CollectorsFragment(), item.title.toString())
+            R.id.nav_item_two -> replaceFragment(AlbumsFragment.newInstance(userType), item.title.toString())
+            R.id.nav_item_three -> replaceFragment(ArtistFragment(), item.title.toString())
+            R.id.nav_item_four -> replaceFragment(CollectorsFragment(), item.title.toString())
         }
         drawer.closeDrawer(GravityCompat.START)
         return true
