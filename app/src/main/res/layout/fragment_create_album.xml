@@ -9,6 +9,7 @@
     android:background="@color/vinilos_dark_gray">
 
     <ScrollView
+        android:id="@+id/scroll_create_album"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
