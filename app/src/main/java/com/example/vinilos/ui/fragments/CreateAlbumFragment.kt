@@ -10,39 +10,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import com.example.vinilos.R
+import com.example.vinilos.viewmodels.CreateAlbumViewModel
 import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CreateAlbumFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CreateAlbumFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var selectedGenre: String? = null
+    private var selectedGenre: String = "Rock"
+    private var selectedRecordLabel: String = "Elecktra"
+
+    private lateinit var viewModel: CreateAlbumViewModel
     private lateinit var albumName: EditText
     private lateinit var coverUrl: EditText
     private lateinit var releaseDate: EditText
     private lateinit var albumDescription: EditText
     private lateinit var genre: AutoCompleteTextView
-    private lateinit var recordLabel: EditText
+    private lateinit var recordLabel: AutoCompleteTextView
     private lateinit var addAlbum: Button
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val activity = requireNotNull(this.activity)
+        viewModel = ViewModelProvider(this, CreateAlbumViewModel.Factory(activity.application)).get(
+            CreateAlbumViewModel::class.java)
+
+        viewModel.wasSuccessful.observe(viewLifecycleOwner, {
+            if (it == true) {
+                Toast.makeText(activity.applicationContext, "Album was created successfully", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(activity.applicationContext, "There was an error creating the album", Toast.LENGTH_LONG).show()
+            }
+            this.activity?.onBackPressed()
+        })
     }
 
     override fun onCreateView(
@@ -70,7 +70,7 @@ class CreateAlbumFragment : Fragment() {
         setBehaviorGenre()
 
         recordLabel = view.findViewById(R.id.record_label)
-        setBehaviorEmptyEditText(recordLabel, "Record label")
+        setBehaviorRecordLabel()
 
         addAlbum = view.findViewById(R.id.btn_add_album)
         setAddAlbumBehavior()
@@ -140,12 +140,16 @@ class CreateAlbumFragment : Fragment() {
                         var mon = Integer.parseInt(clean.substring(2, 4))
                         var year = Integer.parseInt(clean.substring(4, 8))
 
-                        mon = if (mon < 1) 1 else if (mon > 12) 12 else mon
-                        cal.set(Calendar.MONTH, mon - 1)
-                        year = if (year < 1900) 1900 else if (year > 2100) 2100 else year
+                        val currentMon = Calendar.getInstance().get(Calendar.MONTH) + 1
+                        mon = if (mon > currentMon) currentMon else if (mon < 1) currentMon else if (mon > 12) currentMon else mon
+                        cal.set(Calendar.MONTH, mon)
+                        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+                        year = if (year > currentYear) currentYear else year
                         cal.set(Calendar.YEAR, year)
 
-                        day = if (day > cal.getActualMaximum(Calendar.DATE)) cal.getActualMaximum(Calendar.DATE) else day
+                        val currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+
+                        day = if (day > cal.getActualMaximum(Calendar.DATE)) currentDay else if (day > currentDay) currentDay else if (day < 1) currentDay else day
                         clean = String.format("%02d%02d%02d", day, mon, year)
                     }
 
@@ -172,11 +176,20 @@ class CreateAlbumFragment : Fragment() {
     }
 
     private fun setBehaviorGenre(){
-        val items = listOf("Electronic", "Hip hop", "Pop", "Rock", "Salsa")
+        val items = listOf("Classical", "Folk", "Rock", "Salsa")
         val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
         genre.setAdapter(adapter)
         genre.setOnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
-            selectedGenre = parent?.getItemAtPosition(position).toString();
+            selectedGenre = parent?.getItemAtPosition(position).toString()
+        }
+    }
+
+    private fun setBehaviorRecordLabel(){
+        val items = listOf("Discos Fuentes", "Elektra", "EMI", "Fania Records", "Sony Music")
+        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+        recordLabel.setAdapter(adapter)
+        recordLabel.setOnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
+            selectedRecordLabel = parent?.getItemAtPosition(position).toString()
         }
     }
 
@@ -189,7 +202,17 @@ class CreateAlbumFragment : Fragment() {
             }
 
            if(results.all { it }){
-               println("LISTO PARA CREAR ALBUM")
+               val albumParams: Map<String, String> = hashMapOf(
+                   "name" to albumName.text.toString(),
+                   "cover" to coverUrl.text.toString(),
+                   "releaseDate" to releaseDate.text.toString(),
+                   "description" to albumDescription.text.toString(),
+                   "genre" to selectedGenre,
+                   "recordLabel" to recordLabel.text.toString()
+               )
+               viewModel.addNewAlbum(albumParams)
+           } else {
+               Toast.makeText(it.context, "Could not create album. Check input", Toast.LENGTH_SHORT).show()
            }
         }
     }
@@ -201,23 +224,4 @@ class CreateAlbumFragment : Fragment() {
         return false
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CreateAlbumFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CreateAlbumFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }
