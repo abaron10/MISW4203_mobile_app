@@ -6,13 +6,13 @@
 
     <data>
         <import type="android.view.View" />
-        <variable name="viewModel" type="com.example.vinilos.viewmodels.AlbumViewModel"/>
+        <variable name="viewModel" type="com.example.vinilos.viewmodels.ArtistViewModel"/>
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragments.AlbumsFragment"
+        tools:context=".ui.fragments.ArtistFragment"
         android:background="@color/vinilos_dark_gray">
 
         <ScrollView
@@ -37,13 +37,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:drawableEnd="@drawable/ic_search_dark"
-                        android:hint="@string/albums_search"
+                        android:hint="@string/artist_search"
                         android:background="@color/white"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/album_recycler_view"
+                    android:id="@+id/artist_recycler_view"
                     android:layout_margin="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,8 +54,8 @@
         </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_add_button"
-            android:visibility="@{viewModel.isUser || viewModel.isLoading || viewModel.isNetworkErrorShown ? View.GONE : View.VISIBLE}"
+            android:id="@+id/fab"
+            android:visibility="@{viewModel.isLoading || viewModel.isNetworkErrorShown ? View.GONE : View.VISIBLE}"
             app:backgroundTint="@color/vinilos_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -141,11 +141,11 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/no_albums_text"
-                android:visibility="@{viewModel.isLoading || viewModel.isNetworkErrorShown || viewModel.albums.size() > 0 ? View.GONE : View.VISIBLE}"
+                android:id="@+id/no_artist_text"
+                android:visibility="@{viewModel.isLoading || viewModel.isNetworkErrorShown || viewModel.artist.size() > 0 ? View.GONE : View.VISIBLE}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/empty_albums"
+                android:text="@string/empty_artist"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"

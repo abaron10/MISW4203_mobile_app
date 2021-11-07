@@ -19,8 +19,14 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         btn_sign_as_user = findViewById(R.id.btn_sign_as_user)
         btn_sign_as_collector = findViewById(R.id.btn_sign_as_collector)
 
-        btn_sign_as_user.setOnClickListener(this)
-        btn_sign_as_collector.setOnClickListener(this)
+        btn_sign_as_user.setOnClickListener {
+            val extras: HashMap<String, String> = hashMapOf("userType" to "user")
+            goToActivity(MenuActivity::class.java, extras = extras)
+        }
+        btn_sign_as_collector.setOnClickListener {
+            val extras: HashMap<String, String> = hashMapOf("userType" to "collector")
+            goToActivity(MenuActivity::class.java, extras = extras)
+        }
     }
 
     override fun onClick(view: View?) {

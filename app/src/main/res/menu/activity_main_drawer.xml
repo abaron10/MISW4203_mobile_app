@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_album_dark"
             android:title="@string/menu_albums"/>
 
+        <item
+            android:id="@+id/nav_item_three"
+            android:title="@string/menu_artists" />
+
         <item android:id="@+id/nav_item_four"
             android:icon="@drawable/ic_person_dark"
             android:title="Collectors"/>

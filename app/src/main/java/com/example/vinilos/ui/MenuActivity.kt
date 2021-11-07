@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.vinilos.R
 import com.example.vinilos.ui.fragments.AlbumsFragment
 import com.example.vinilos.ui.fragments.CollectorsFragment
+import com.example.vinilos.ui.fragments.ArtistFragment
 import com.google.android.material.navigation.NavigationView
 
 class MenuActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -66,7 +67,8 @@ class MenuActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         item.isChecked = true
         when(item.itemId) {
             R.id.nav_item_one -> goToHome()
-            R.id.nav_item_two -> replaceFragment(AlbumsFragment(), item.title.toString())
+            R.id.nav_item_two -> replaceFragment(AlbumsFragment.newInstance(userType), item.title.toString())
+            R.id.nav_item_three -> replaceFragment(ArtistFragment(), item.title.toString())
             R.id.nav_item_four -> replaceFragment(CollectorsFragment(), item.title.toString())
         }
         drawer.closeDrawer(GravityCompat.START)

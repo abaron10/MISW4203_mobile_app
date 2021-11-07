@@ -11,4 +11,10 @@ class AlbumRepository (val application: Application){
             callback(it)
         }, onError)
     }
+
+    fun addAlbum(albumParams: Map<String, String>, callback: (Album) -> Unit, onError: (VolleyError) -> Unit) {
+        AlbumServiceAdapter.getInstance(application).createAlbum(albumParams, {
+            callback(it)
+        }, onError)
+    }
 }
