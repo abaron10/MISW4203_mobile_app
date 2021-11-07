@@ -17,8 +17,9 @@ import java.util.*
 
 
 class CreateAlbumFragment : Fragment() {
-    private var selectedGenre: String = "Rock"
-    private var selectedRecordLabel: String = "Elecktra"
+    private var selectedGenre: String = ""
+    private var selectedRecordLabel: String = ""
+    private val validDateRegex = "^([0-2][0-9]|(3)[0-1])(\\/)(((0)[0-9])|((1)[0-2]))(\\/)\\d{4}\$".toRegex()
 
     private lateinit var viewModel: CreateAlbumViewModel
     private lateinit var albumName: EditText
@@ -79,9 +80,7 @@ class CreateAlbumFragment : Fragment() {
     private fun setBehaviorEmptyEditText(editText: EditText, name: String){
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if(TextUtils.isEmpty(editText.text)){
-                    editText.error = "$name cannot be empty"
-                }
+                checkEmptyField(editText, name)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -95,9 +94,7 @@ class CreateAlbumFragment : Fragment() {
     private fun setBehaviorCoverUrl(){
         coverUrl.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if(TextUtils.isEmpty(albumName.text)){
-                    albumName.error = "Image url cannot be empty"
-                }
+                checkEmptyField(coverUrl, "Image url")
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -117,7 +114,6 @@ class CreateAlbumFragment : Fragment() {
             private var current = ""
             private val ddmmyyyy = "DDMMYYYY"
             private val cal = Calendar.getInstance()
-            private val validDateRegex = "^([0-2][0-9]|(3)[0-1])(\\/)(((0)[0-9])|((1)[0-2]))(\\/)\\d{4}\$".toRegex()
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.toString() != current) {
@@ -181,6 +177,7 @@ class CreateAlbumFragment : Fragment() {
         genre.setAdapter(adapter)
         genre.setOnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
             selectedGenre = parent?.getItemAtPosition(position).toString()
+            genre.error = null
         }
     }
 
@@ -190,11 +187,13 @@ class CreateAlbumFragment : Fragment() {
         recordLabel.setAdapter(adapter)
         recordLabel.setOnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
             selectedRecordLabel = parent?.getItemAtPosition(position).toString()
+            recordLabel.error = null
         }
     }
 
     private fun setAddAlbumBehavior(){
         addAlbum.setOnClickListener{
+            checkFields()
             val fields: List<EditText> = listOf(albumName, coverUrl, releaseDate, albumDescription, genre, recordLabel)
             val results: MutableList<Boolean> = mutableListOf()
             for (f in fields){
@@ -222,6 +221,36 @@ class CreateAlbumFragment : Fragment() {
             return true
         }
         return false
+    }
+
+    private fun checkFields(){
+        val fields: List<EditText> = listOf(albumName, coverUrl, albumDescription)
+        for(f in fields){
+            checkEmptyField(f, f.hint.toString())
+        }
+        checkReleaseDate()
+        checkSelectedOptions()
+    }
+
+    private fun checkEmptyField(editText: EditText, name: String){
+        if(TextUtils.isEmpty(editText.text)){
+            editText.error = "$name cannot be empty"
+        }
+    }
+
+    private fun checkReleaseDate(){
+        if(!validDateRegex.matches(releaseDate.text)){
+            releaseDate.error = "Date cannot be empty"
+        }
+    }
+
+    private fun checkSelectedOptions(){
+        if(selectedGenre == ""){
+            genre.error = "Genre was not selected"
+        }
+        if(selectedRecordLabel == ""){
+            recordLabel.error = "Record label was not selected"
+        }
     }
 
 }
