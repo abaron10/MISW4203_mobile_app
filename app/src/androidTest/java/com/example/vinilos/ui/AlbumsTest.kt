@@ -2,9 +2,6 @@ package com.example.vinilos.ui
 
 import android.view.Gravity
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.swipeDown
-import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.DrawerActions
 import androidx.test.espresso.contrib.DrawerMatchers
@@ -14,9 +11,16 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.vinilos.R
 import org.hamcrest.CoreMatchers
+import org.hamcrest.EasyMock2Matchers.equalTo
+import org.hamcrest.Matcher
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.random.Random
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withText
+
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class AlbumsTest {
@@ -28,7 +32,7 @@ class AlbumsTest {
             ViewAssertions.matches(ViewMatchers.isDisplayed())
         )
         Espresso.onView(ViewMatchers.withId(R.id.btn_sign_as_user)).perform(
-            ViewActions.click()
+            click()
         )
         Espresso.onView(ViewMatchers.withId(R.id.drawer_layout)).check(
             ViewAssertions.matches(DrawerMatchers.isClosed(Gravity.LEFT))
@@ -46,7 +50,7 @@ class AlbumsTest {
             ViewAssertions.matches(ViewMatchers.isDisplayed())
         )
         Espresso.onView(ViewMatchers.withId(R.id.btn_sign_as_collector)).perform(
-            ViewActions.click()
+            click()
         )
         Espresso.onView(ViewMatchers.withId(R.id.drawer_layout)).check(
             ViewAssertions.matches(DrawerMatchers.isClosed(Gravity.LEFT))
@@ -64,7 +68,7 @@ class AlbumsTest {
             ViewAssertions.matches(ViewMatchers.isDisplayed())
         )
         Espresso.onView(ViewMatchers.withId(R.id.floating_add_button)).perform(
-            ViewActions.click()
+            click()
         )
         Thread.sleep(1000)
     }
@@ -76,7 +80,7 @@ class AlbumsTest {
         Espresso.onView(
             CoreMatchers.allOf(
                 ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("A Night at the Opera")
+                withText("A Night at the Opera")
             )
         ).check(
             ViewAssertions.matches(ViewMatchers.isDisplayed())
@@ -84,7 +88,7 @@ class AlbumsTest {
         Espresso.onView(
             CoreMatchers.allOf(
                 ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("Tagopia")
+                withText("Tagopia")
             )
         ).check(
             ViewAssertions.matches(ViewMatchers.isDisplayed())
@@ -96,13 +100,13 @@ class AlbumsTest {
         goToAlbumsView()
 
         Espresso.onView(ViewMatchers.withId(R.id.search_box_field)).perform(
-            ViewActions.click(), ViewActions.replaceText("A Night at the Opera")
+            click(), replaceText("A Night at the Opera")
         )
         Thread.sleep(5000);
         Espresso.onView(
             CoreMatchers.allOf(
                 ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("A Night at the Opera")
+                withText("A Night at the Opera")
             )
         ).check(
             ViewAssertions.matches(ViewMatchers.isDisplayed())
@@ -110,7 +114,7 @@ class AlbumsTest {
         Espresso.onView(
             CoreMatchers.allOf(
                 ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("Tagopia")
+                withText("Tagopia")
             )
         ).check(
             ViewAssertions.doesNotExist()
@@ -122,13 +126,13 @@ class AlbumsTest {
         goToAlbumsView()
 
         Espresso.onView(ViewMatchers.withId(R.id.search_box_field)).perform(
-            ViewActions.click(), ViewActions.replaceText("Random non existing text")
+            click(), replaceText("Random non existing text")
         )
         Thread.sleep(5000);
         Espresso.onView(
             CoreMatchers.allOf(
                 ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("A Night at the Opera")
+                withText("A Night at the Opera")
             )
         ).check(
             ViewAssertions.doesNotExist()
@@ -136,7 +140,7 @@ class AlbumsTest {
         Espresso.onView(
             CoreMatchers.allOf(
                 ViewMatchers.withId(R.id.album_item_name),
-                ViewMatchers.withText("Tagopia")
+                withText("Tagopia")
             )
         ).check(
             ViewAssertions.doesNotExist()
@@ -155,7 +159,7 @@ class AlbumsTest {
             .perform(swipeUp())
 
         Espresso.onView(ViewMatchers.withId(R.id.btn_add_album)).perform(
-            ViewActions.click()
+            click()
         )
 
         Espresso.onView(ViewMatchers.withId(R.id.scroll_create_album))
@@ -218,6 +222,78 @@ class AlbumsTest {
         ).check(
             ViewAssertions.matches(ViewMatchers.isDisplayed())
         )
+    }
+
+    @Test
+    fun test_create_album_ok() {
+        goToAlbumsViewAsCollector()
+        goToCreateAlbum()
+
+        val albumName = "Test grupo 10 "+ Random.nextInt(0, 100)
+
+        Espresso.onView(ViewMatchers.withId(R.id.album_name)).perform(
+            click(), replaceText(albumName)
+        )
+
+        Espresso.onView(ViewMatchers.withId(R.id.cover_image_url)).perform(
+            click(), replaceText("www.google.com")
+        )
+
+        Espresso.onView(ViewMatchers.withId(R.id.release_date)).perform(
+            click(), replaceText("01/01/2000")
+        )
+
+        Espresso.onView(ViewMatchers.withId(R.id.album_description))
+            .perform(scrollTo())
+
+        Espresso.onView(ViewMatchers.withId(R.id.album_description)).perform(
+            click(), replaceText(albumName + albumName)
+        )
+
+        Espresso.onView(ViewMatchers.withId(R.id.genre))
+            .perform(scrollTo())
+
+        Espresso.onView(ViewMatchers.withId(R.id.genre)).perform(
+            click()
+        )
+
+        Espresso.onView(withText("Salsa"))
+            .inRoot(RootMatchers.isPlatformPopup())
+            .perform(click())
+
+        Espresso.onView(ViewMatchers.withId(R.id.record_label))
+            .perform(scrollTo())
+
+        Espresso.onView(ViewMatchers.withId(R.id.record_label)).perform(
+            click()
+        )
+
+        Espresso.onView(withText("Elektra"))
+            .inRoot(RootMatchers.isPlatformPopup())
+            .perform(click())
+
+        Espresso.onView(ViewMatchers.withId(R.id.btn_add_album))
+            .perform(scrollTo())
+
+        Espresso.onView(ViewMatchers.withId(R.id.btn_add_album)).perform(
+            click()
+        )
+
+        goToAlbumsViewAsCollector()
+
+        Espresso.onView(ViewMatchers.withId(R.id.search_box_field)).perform(
+            click(), replaceText(albumName)
+        )
+        Thread.sleep(5000);
+        Espresso.onView(
+            CoreMatchers.allOf(
+                ViewMatchers.withId(R.id.album_item_name),
+                withText(albumName)
+            )
+        ).check(
+            ViewAssertions.matches(ViewMatchers.isDisplayed())
+        )
 
     }
+
 }
