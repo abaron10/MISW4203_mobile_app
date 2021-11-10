@@ -19,10 +19,10 @@ class AlbumViewModel(application: Application, albumId: Int): AndroidViewModel(a
         get() = _isLoading
 
     init {
-        refreshDateFromNetwork()
+        refreshDataFromNetwork()
     }
 
-    fun refreshDateFromNetwork() {
+    fun refreshDataFromNetwork() {
         _isLoading.value = true
         _isNetworkErrorShown.value = false
         albumRepository.refreshAlbum(id, {

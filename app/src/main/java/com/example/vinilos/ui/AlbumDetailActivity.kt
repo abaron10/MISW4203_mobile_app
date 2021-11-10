@@ -1,26 +1,15 @@
 package com.example.vinilos.ui
 
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.vinilos.R
 import com.example.vinilos.adapters.AlbumTracksAdapter
-import com.example.vinilos.adapters.AlbumsAdapter
 import com.example.vinilos.databinding.ActivityAlbumDetailBinding
-import com.example.vinilos.databinding.ActivityAlbumDetailBindingImpl
 import com.example.vinilos.models.Album
-import com.example.vinilos.repositories.AlbumRepository
 import com.example.vinilos.viewmodels.AlbumViewModel
-import com.example.vinilos.viewmodels.AlbumsViewModel
-import com.google.android.material.imageview.ShapeableImageView
 
 class AlbumDetailActivity : AppCompatActivity() {
     private var albumId: Int = 0
@@ -47,6 +36,12 @@ class AlbumDetailActivity : AppCompatActivity() {
         tracksRecyclerView.isNestedScrollingEnabled = false
         tracksRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
         tracksRecyclerView.adapter = tracksAdapter
+
+        val retryView = binding.retryView
+        val btnTryAgain = retryView.btnTryAgain
+        btnTryAgain.setOnClickListener {
+            viewModel.refreshDataFromNetwork()
+        }
 
         viewModel = ViewModelProvider(
             this,
