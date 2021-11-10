@@ -9,9 +9,9 @@
         <variable name="viewModel" type="com.example.vinilos.viewmodels.AlbumViewModel"/>
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/vinilos_dark_gray"
         >
         <LinearLayout
@@ -119,6 +119,16 @@
                 android:layout_height="15dp"
                 />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/vinilos_light_gray"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                />
+
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,6 +137,16 @@
                 android:textStyle="bold"
                 android:textSize="25sp"
                 />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/vinilos_light_gray"/>
 
             <Space
                 android:layout_width="match_parent"
@@ -169,11 +189,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
                 />
-
+            
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/vinilos_light_gray"/>
+            
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/album_detail_tracks_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/vinilos_light_gray"
+                android:layout_marginBottom="25dp"
+                />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

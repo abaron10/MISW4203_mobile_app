@@ -21,7 +21,7 @@ import com.example.vinilos.ui.BaseActivity
 
 class AlbumsAdapter(var context: Context) : RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder>() {
 
-  var albums :List<Album> = emptyList()
+  var albums: List<Album> = emptyList()
     set(value) {
       field = value
       notifyDataSetChanged()

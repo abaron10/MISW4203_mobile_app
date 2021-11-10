@@ -7,8 +7,13 @@ import android.widget.Button
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.vinilos.R
+import com.example.vinilos.adapters.AlbumTracksAdapter
+import com.example.vinilos.adapters.AlbumsAdapter
 import com.example.vinilos.databinding.ActivityAlbumDetailBinding
 import com.example.vinilos.databinding.ActivityAlbumDetailBindingImpl
 import com.example.vinilos.models.Album
@@ -23,6 +28,9 @@ class AlbumDetailActivity : AppCompatActivity() {
     private val binding get() = _binding!!
     private lateinit var viewModel: AlbumViewModel
 
+    private lateinit var tracksAdapter: AlbumTracksAdapter
+    private lateinit var tracksRecyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityAlbumDetailBinding.inflate(layoutInflater)
@@ -34,6 +42,12 @@ class AlbumDetailActivity : AppCompatActivity() {
         this.albumId = intent.getIntExtra(
             BaseActivity.INTENT_EXTRA_ALBUM_ID, 0
         )
+        tracksAdapter = AlbumTracksAdapter(applicationContext)
+        tracksRecyclerView = binding.albumDetailTracksRecyclerView
+        tracksRecyclerView.isNestedScrollingEnabled = false
+        tracksRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        tracksRecyclerView.adapter = tracksAdapter
+
         viewModel = ViewModelProvider(
             this,
             AlbumViewModel.Factory(application, this.albumId)).get(
@@ -45,6 +59,7 @@ class AlbumDetailActivity : AppCompatActivity() {
         viewModel.album.observe(this, Observer<Album> {
             it.apply {
                 title = this.name
+                tracksAdapter.tracks = this.tracks
             }
         })
     }

@@ -83,7 +83,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/vinilos_pink"
             android:text="@string/main_sign_as_user"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textColor="@color/white"/>
 
         <Space
@@ -98,7 +98,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/vinilos_pink"
             android:text="@string/main_sign_as_collector"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textColor="@color/white"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
