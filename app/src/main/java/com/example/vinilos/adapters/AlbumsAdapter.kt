@@ -2,6 +2,7 @@ package com.example.vinilos.adapters
 
 import com.example.vinilos.R
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinilos.databinding.AlbumItemLayoutBinding
 import com.example.vinilos.models.Album
+import com.example.vinilos.ui.AlbumDetailActivity
+import com.example.vinilos.ui.BaseActivity
 
 class AlbumsAdapter(var context: Context) : RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder>() {
 
@@ -36,7 +41,12 @@ class AlbumsAdapter(var context: Context) : RecyclerView.Adapter<AlbumsAdapter.A
       it.album = albums[position]
     }
     holder.viewDataBinding.root.setOnClickListener {
-      Toast.makeText(it.context, albums[position].name, Toast.LENGTH_SHORT).show()
+      val intent = Intent(context, AlbumDetailActivity::class.java)
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      intent.putExtra(
+        BaseActivity.INTENT_EXTRA_ALBUM_ID, albums[position].albumId
+      )
+      context.startActivity(intent)
     }
   }
 

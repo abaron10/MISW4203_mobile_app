@@ -5,13 +5,12 @@ import androidx.lifecycle.*
 import com.example.vinilos.models.Album
 import com.example.vinilos.repositories.AlbumRepository
 
-class AlbumViewModel(application: Application): AndroidViewModel(application) {
-    private val albumsRepository = AlbumRepository(application)
-    var isUser: Boolean = true
-    private val _albums = MutableLiveData<List<Album>>()
-    private var initialAlbums: List<Album> = emptyList()
-    val albums: LiveData<List<Album>>
-        get() = _albums
+class AlbumViewModel(application: Application, albumId: Int): AndroidViewModel(application) {
+    private val albumRepository = AlbumRepository(application)
+    private val id = albumId
+    private val _album = MutableLiveData<Album>()
+    val album: LiveData<Album>
+        get() = _album
     private var _isNetworkErrorShown = MutableLiveData<Boolean>(false)
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
@@ -20,37 +19,26 @@ class AlbumViewModel(application: Application): AndroidViewModel(application) {
         get() = _isLoading
 
     init {
-        refreshDataFromNetwork()
+        refreshDateFromNetwork()
     }
 
-    fun refreshDataFromNetwork() {
+    fun refreshDateFromNetwork() {
         _isLoading.value = true
         _isNetworkErrorShown.value = false
-        albumsRepository.refreshData({
-            _albums.postValue(it)
-            initialAlbums = it
+        albumRepository.refreshAlbum(id, {
+            _album.postValue(it)
             _isLoading.value = false
-        },{
+        }, {
             _isNetworkErrorShown.value = true
             _isLoading.value = false
         })
     }
 
-    fun filterByAlbumName(name: String) {
-        var filteredList = mutableListOf<Album>()
-        for(album in this.initialAlbums) {
-            if(album.name.lowercase().startsWith(name.lowercase())) {
-                filteredList.add(album)
-            }
-        }
-        _albums.postValue(filteredList)
-    }
-
-    class Factory(val app: Application) : ViewModelProvider.Factory {
+    class Factory(val app: Application, val albumId: Int) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(AlbumViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return AlbumViewModel(app) as T
+                return AlbumViewModel(app, albumId) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }
