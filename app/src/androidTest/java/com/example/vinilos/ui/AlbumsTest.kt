@@ -277,6 +277,7 @@ class AlbumsTest {
             click()
         )
 
+        Thread.sleep(5000);
         goToAlbumsViewAsCollector()
 
         Espresso.onView(ViewMatchers.withId(R.id.search_box_field)).perform(
