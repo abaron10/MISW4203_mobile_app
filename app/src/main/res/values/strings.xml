@@ -26,4 +26,9 @@
     <string name="empty_artist">No artists</string>
     <string name="collectors_search">Search collector</string>
     <string name="empty_collectors">No collectors</string>
+    <string name="album_detail_release_date">Release date:&#160;</string>
+    <string name="album_detail_authors">Authors:&#160;</string>
+    <string name="album_detail_tracks">Tracks</string>
+    <string name="plus">+</string>
+    <string name="album_detail_add_track">Add track</string>
 </resources>

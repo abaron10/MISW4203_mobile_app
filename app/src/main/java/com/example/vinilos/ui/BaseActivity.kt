@@ -5,6 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 
 abstract class BaseActivity : AppCompatActivity() {
+    companion object {
+        val INTENT_EXTRA_ALBUM_ID: String = "INTENT_EXTRA_ALBUM_ID"
+    }
+
     fun goToActivity(activityClass: Class<*>?, flags: Int? = null, extras: HashMap<String, String>? = null) {
         val intent = Intent(this, activityClass)
         flags?.let {
