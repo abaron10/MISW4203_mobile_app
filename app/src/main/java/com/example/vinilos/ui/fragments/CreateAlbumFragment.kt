@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.ArrayMap
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -201,14 +202,13 @@ class CreateAlbumFragment : Fragment() {
             }
 
            if(results.all { it }){
-               val albumParams: Map<String, String> = hashMapOf(
-                   "name" to albumName.text.toString(),
-                   "cover" to coverUrl.text.toString(),
-                   "releaseDate" to releaseDate.text.toString(),
-                   "description" to albumDescription.text.toString(),
-                   "genre" to selectedGenre,
-                   "recordLabel" to recordLabel.text.toString()
-               )
+               val albumParams: ArrayMap<String, String> = ArrayMap()
+               albumParams["name"] = albumName.text.toString()
+               albumParams["cover"] = coverUrl.text.toString()
+               albumParams["releaseDate"] = releaseDate.text.toString()
+               albumParams["description"] = albumDescription.text.toString()
+               albumParams["genre"] = selectedGenre
+               albumParams["recordLabel"] = recordLabel.text.toString()
                viewModel.addNewAlbum(albumParams)
            } else {
                Toast.makeText(it.context, "Could not create album. Check input", Toast.LENGTH_SHORT).show()

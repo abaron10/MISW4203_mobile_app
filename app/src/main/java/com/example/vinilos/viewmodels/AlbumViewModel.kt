@@ -4,6 +4,9 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.vinilos.models.Album
 import com.example.vinilos.repositories.AlbumRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AlbumViewModel(application: Application, albumId: Int): AndroidViewModel(application) {
     private val albumRepository = AlbumRepository(application)
@@ -25,17 +28,22 @@ class AlbumViewModel(application: Application, albumId: Int): AndroidViewModel(a
     fun refreshDataFromNetwork() {
         _isLoading.value = true
         _isNetworkErrorShown.value = false
-        albumRepository.refreshAlbum(id, {
-            _album.postValue(it)
-            _isLoading.value = false
-        }, {
-            _isNetworkErrorShown.value = true
-            _isLoading.value = false
-        })
+        viewModelScope.launch(Dispatchers.Default) {
+            withContext(Dispatchers.IO){
+                try {
+                    val data = albumRepository.refreshAlbum(id)
+                    _album.postValue(data)
+                    _isLoading.postValue(false)
+                } catch(e: Exception) {
+                    _isNetworkErrorShown.postValue(true)
+                    _isLoading.postValue(false)
+                }
+            }
+        }
     }
 
     class Factory(val app: Application, val albumId: Int) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(AlbumViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 return AlbumViewModel(app, albumId) as T
