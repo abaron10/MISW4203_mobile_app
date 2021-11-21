@@ -5,6 +5,9 @@ import androidx.lifecycle.*
 import com.example.vinilos.events.SingleLiveEvent
 import com.example.vinilos.models.Album
 import com.example.vinilos.repositories.AlbumRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CreateAlbumViewModel(application: Application): AndroidViewModel(application) {
     private val albumsRepository = AlbumRepository(application)
@@ -12,11 +15,16 @@ class CreateAlbumViewModel(application: Application): AndroidViewModel(applicati
 
 
     fun addNewAlbum(albumParams: Map<String, String>) {
-        albumsRepository.addAlbum(albumParams, {
-            wasSuccessful.value = true
-        },{
-            wasSuccessful.value = false
-        })
+        viewModelScope.launch(Dispatchers.Default) {
+            withContext(Dispatchers.IO){
+                try {
+                    albumsRepository.addAlbum(albumParams)
+                    wasSuccessful.postValue(true)
+                } catch(e: Exception) {
+                    wasSuccessful.postValue(false)
+                }
+            }
+        }
     }
 
 
