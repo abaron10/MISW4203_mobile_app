@@ -32,11 +32,9 @@ class AlbumRepository (val application: Application){
         }
     }
 
-    fun addAlbum(albumParams: Map<String, String>, callback: (Album) -> Unit, onError: (VolleyError) -> Unit) {
-        AlbumServiceAdapter.getInstance(application).createAlbum(albumParams, {
-            callback(it)
-        }, onError)
+    suspend fun addAlbum(albumParams: Map<String, String>) {
+        AlbumServiceAdapter.getInstance(application).createAlbum(albumParams)
         val db = VinylRoomDatabase.getDatabase(application.applicationContext)
-        // Aqui se tiene que llamar el borrado de la base de datos de room -> db.albumDao().deleteAll()
+        db.albumDao().deleteAll()
     }
 }

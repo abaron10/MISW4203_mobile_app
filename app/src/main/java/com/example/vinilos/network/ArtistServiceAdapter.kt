@@ -6,6 +6,7 @@ import com.android.volley.VolleyError
 import com.example.vinilos.models.Album
 import com.example.vinilos.models.Artist
 import org.json.JSONArray
+import org.json.JSONObject
 
 class ArtistServiceAdapter constructor(context: Context): NetworkServiceAdapter(context)  {
     companion object{
@@ -21,8 +22,9 @@ class ArtistServiceAdapter constructor(context: Context): NetworkServiceAdapter(
         requestQueue.add(getRequest("musicians",  { response ->
                 val resp = JSONArray(response)
                 val list = mutableListOf<Artist>()
+                var item: JSONObject
                 for (i in 0 until resp.length()) {
-                    val item = resp.getJSONObject(i)
+                    item = resp.getJSONObject(i)
                     list.add(i, Artist(artistId = item.getInt("id"),name = item.getString("name"), image = item.getString("image"), description = item.getString("description"), birthDate = item.getString("birthDate")))
                 }
                 onComplete(list)

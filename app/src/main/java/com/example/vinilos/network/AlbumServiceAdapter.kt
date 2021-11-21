@@ -44,25 +44,22 @@ class AlbumServiceAdapter constructor(context: Context): NetworkServiceAdapter(c
         )
     }
 
-    fun createAlbum(albumParams: Map<String, String>,
-                    onComplete: (resp: Album) -> Unit,
-                    onError: (error: VolleyError) -> Unit){
-
-        requestQueue.add(postRequest("albums", JSONObject(albumParams), { response ->
-            val createdAlbum = Album(
-                albumId = response.getInt("id"),
-                name = response.getString("name"),
-                cover = response.getString("cover"),
-                recordLabel = response.getString("recordLabel"),
-                releaseDate = response.getString("releaseDate"),
-                genre = response.getString("genre"),
-                description = response.getString("description")
-            )
-
-            onComplete(createdAlbum)
-        },
-            {
-                onError(it)
-            }))
+    suspend fun createAlbum(albumParams: Map<String, String>) = suspendCoroutine<Album> { cont ->
+        requestQueue.add(
+            postRequest("albums", JSONObject(albumParams), { response ->
+                val createdAlbum = Album(
+                    albumId = response.getInt("id"),
+                    name = response.getString("name"),
+                    cover = response.getString("cover"),
+                    recordLabel = response.getString("recordLabel"),
+                    releaseDate = response.getString("releaseDate"),
+                    genre = response.getString("genre"),
+                    description = response.getString("description"))
+                cont.resume(createdAlbum)
+            }, {
+                cont.resumeWithException(it)
+            })
+        )
     }
+
 }

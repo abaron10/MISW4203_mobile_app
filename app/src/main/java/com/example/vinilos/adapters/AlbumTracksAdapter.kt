@@ -1,5 +1,6 @@
 package com.example.vinilos.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.example.vinilos.models.Track
 
 class AlbumTracksAdapter(var context: Context): RecyclerView.Adapter<AlbumTracksAdapter.AlbumTrackViewHolder>() {
     var tracks: List<Track> = emptyList()
+    @SuppressLint("NotifyDataSetChanged")
     set(value) {
         field = value
         notifyDataSetChanged()

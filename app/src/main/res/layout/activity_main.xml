@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity"
-    android:background="@color/vinilos_dark_gray">
+    android:background="@color/vinilos_dark_gray"
+    tools:ignore="Overdraw">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/header_section"
@@ -31,6 +32,7 @@
         android:src="@mipmap/home"
         app:layout_constraintTop_toBottomOf="@id/header_section"
         app:layout_constraintBottom_toTopOf="@id/quote_section"
+        tools:ignore="ContentDescription"
         />
 
     <com.google.android.material.textview.MaterialTextView
@@ -83,7 +85,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/vinilos_pink"
             android:text="@string/main_sign_as_user"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/white"/>
 
         <Space
@@ -98,7 +100,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/vinilos_pink"
             android:text="@string/main_sign_as_collector"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/white"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

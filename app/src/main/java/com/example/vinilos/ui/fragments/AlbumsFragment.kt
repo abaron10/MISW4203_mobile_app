@@ -61,14 +61,14 @@ class AlbumsFragment : Fragment() {
         _binding = FragmentAlbumsBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         val view = binding.root
-        albumsAdapter = AlbumsAdapter(activity!!.applicationContext)
+        albumsAdapter = AlbumsAdapter(requireActivity().applicationContext)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val retryView = binding.retryView
         albumRecyclerView = binding.albumRecyclerView
-        albumRecyclerView.layoutManager = GridLayoutManager(activity!!.applicationContext,2)
+        albumRecyclerView.layoutManager = GridLayoutManager(requireActivity().applicationContext,2)
         albumRecyclerView.adapter = albumsAdapter
         albumInputText = binding.searchBoxField
         btnTryAgain = retryView.btnTryAgain

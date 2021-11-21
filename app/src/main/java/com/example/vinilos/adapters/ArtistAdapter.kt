@@ -1,5 +1,6 @@
 package com.example.vinilos.adapters
 
+import android.annotation.SuppressLint
 import com.example.vinilos.R
 import android.content.Context
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import com.example.vinilos.models.Artist
 class ArtistAdapter(var context: Context) : RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder>() {
 
   var artist :List<Artist> = emptyList()
+    @SuppressLint("NotifyDataSetChanged")
     set(value) {
       field = value
       notifyDataSetChanged()
