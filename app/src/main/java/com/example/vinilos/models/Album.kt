@@ -47,7 +47,7 @@ data class Album (
     }
 
     fun formattedReleaseDate(): String {
-        val newFormat = SimpleDateFormat("dd/MM/yyyy")
+        val newFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return newFormat.format(this.releaseDateToDate())
     }
 
@@ -58,7 +58,7 @@ data class Album (
     }
 
     private fun releaseDateToDate() : Date {
-        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         return formatter.parse(releaseDate)
     }
 }
