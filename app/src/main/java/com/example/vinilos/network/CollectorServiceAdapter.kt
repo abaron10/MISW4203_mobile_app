@@ -5,6 +5,7 @@ import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.example.vinilos.models.Collector
 import org.json.JSONArray
+import org.json.JSONObject
 
 class CollectorServiceAdapter constructor(context: Context): NetworkServiceAdapter(context)  {
     companion object{
@@ -21,8 +22,9 @@ class CollectorServiceAdapter constructor(context: Context): NetworkServiceAdapt
         requestQueue.add(getRequest("collectors",  { response ->
                 val resp = JSONArray(response)
                 val list = mutableListOf<Collector>()
+                var item: JSONObject
                 for (i in 0 until resp.length()) {
-                    val item = resp.getJSONObject(i)
+                    item = resp.getJSONObject(i)
                     list.add(i, Collector(collectorId = item.getInt("id"),name = item.getString("name"), telephone = item.getString("telephone"), email = item.getString("email")))
                 }
                 onComplete(list)

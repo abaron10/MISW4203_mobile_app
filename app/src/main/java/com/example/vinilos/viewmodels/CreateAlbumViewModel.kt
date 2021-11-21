@@ -13,7 +13,6 @@ class CreateAlbumViewModel(application: Application): AndroidViewModel(applicati
 
     fun addNewAlbum(albumParams: Map<String, String>) {
         albumsRepository.addAlbum(albumParams, {
-            println("LAURA "+it.albumId)
             wasSuccessful.value = true
         },{
             wasSuccessful.value = false
