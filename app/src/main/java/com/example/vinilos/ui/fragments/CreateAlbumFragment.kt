@@ -134,11 +134,8 @@ class CreateAlbumFragment : Fragment() {
                         clean += ddmmyyyy.substring(clean.length)
                     } else {
                         var day = Integer.parseInt(clean.substring(0, 2))
-                        println(day)
                         var mon = Integer.parseInt(clean.substring(2, 4))
-                        println(mon)
                         var year = Integer.parseInt(clean.substring(4, 8))
-                        println(year)
 
                         val currentMon = Calendar.getInstance().get(Calendar.MONTH) + 1
                         mon = if (mon > currentMon) currentMon else if (mon < 1) currentMon else if (mon > 12) currentMon else mon
