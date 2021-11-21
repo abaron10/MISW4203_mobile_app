@@ -20,6 +20,6 @@
 
         <item android:id="@+id/nav_item_four"
             android:icon="@drawable/ic_person_dark"
-            android:title="Collectors"/>
+            android:title="@string/collectors"/>
     </group>
 </menu>

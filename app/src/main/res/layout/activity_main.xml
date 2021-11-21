@@ -31,6 +31,7 @@
         android:src="@mipmap/home"
         app:layout_constraintTop_toBottomOf="@id/header_section"
         app:layout_constraintBottom_toTopOf="@id/quote_section"
+        tools:ignore="ContentDescription"
         />
 
     <com.google.android.material.textview.MaterialTextView
@@ -83,7 +84,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/vinilos_pink"
             android:text="@string/main_sign_as_user"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/white"/>
 
         <Space
@@ -98,7 +99,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/vinilos_pink"
             android:text="@string/main_sign_as_collector"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/white"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,4 +31,9 @@
     <string name="album_detail_tracks">Tracks</string>
     <string name="plus">+</string>
     <string name="album_detail_add_track">Add track</string>
+    <string name="add_new_album_button">Add new album button</string>
+    <string name="add_new_artist_button">Add new artist button</string>
+    <string name="dropdown_album_genre">Dropdown album genre</string>
+    <string name="dropdown_album_record_label">Dropdown album record label</string>
+    <string name="collectors">Collectors</string>
 </resources>

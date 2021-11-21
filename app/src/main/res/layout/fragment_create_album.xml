@@ -98,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:hint="@string/album_genre"
+                android:labelFor="@+id/genre"
                 >
 
                 <AutoCompleteTextView
@@ -117,6 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:hint="@string/album_record_label"
+                android:labelFor="@id/record_label"
                 >
 
                 <AutoCompleteTextView

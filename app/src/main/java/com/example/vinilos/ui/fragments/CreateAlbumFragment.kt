@@ -19,7 +19,7 @@ import java.util.*
 class CreateAlbumFragment : Fragment() {
     private var selectedGenre: String = ""
     private var selectedRecordLabel: String = ""
-    private val validDateRegex = "^([0-2][0-9]|(3)[0-1])(\\/)(((0)[0-9])|((1)[0-2]))(\\/)\\d{4}\$".toRegex()
+    private val validDateRegex = "^(((0)[0-9])|((1)[0-2]))(\\/)([0-2][0-9]|(3)[0-1])(\\/)\\d{4}\$".toRegex()
 
     private lateinit var viewModel: CreateAlbumViewModel
     private lateinit var albumName: EditText
@@ -112,7 +112,7 @@ class CreateAlbumFragment : Fragment() {
         releaseDate.addTextChangedListener(object : TextWatcher {
 
             private var current = ""
-            private val ddmmyyyy = "DDMMYYYY"
+            private val ddmmyyyy = "MMDDYYYY"
             private val cal = Calendar.getInstance()
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -133,25 +133,33 @@ class CreateAlbumFragment : Fragment() {
                         clean += ddmmyyyy.substring(clean.length)
                     } else {
                         var day = Integer.parseInt(clean.substring(0, 2))
+                        println(day)
                         var mon = Integer.parseInt(clean.substring(2, 4))
+                        println(mon)
                         var year = Integer.parseInt(clean.substring(4, 8))
+                        println(year)
 
                         val currentMon = Calendar.getInstance().get(Calendar.MONTH) + 1
                         mon = if (mon > currentMon) currentMon else if (mon < 1) currentMon else if (mon > 12) currentMon else mon
                         cal.set(Calendar.MONTH, mon)
                         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-                        year = if (year > currentYear) currentYear else year
+                        year = if (year > currentYear) currentYear else if (year < 1) currentYear else year
                         cal.set(Calendar.YEAR, year)
 
                         val currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 
                         day = if (day > cal.getActualMaximum(Calendar.DATE)) currentDay else if (day > currentDay) currentDay else if (day < 1) currentDay else day
-                        clean = String.format("%02d%02d%02d", day, mon, year)
+                        clean = String.format("%02d%02d%02d", mon, day, year)
                     }
 
-                    clean = String.format("%s/%s/%s", clean.substring(0, 2),
-                        clean.substring(2, 4),
-                        clean.substring(4, 8))
+                    if (clean.length < 8) {
+                        clean += ddmmyyyy.substring(clean.length)
+                    } else {
+                        clean = String.format("%s/%s/%s", clean.substring(0, 2),
+                            clean.substring(2, 4),
+                            clean.substring(4, 8))
+                    }
+
 
                     sel = if (sel < 0) 0 else sel
                     current = clean
