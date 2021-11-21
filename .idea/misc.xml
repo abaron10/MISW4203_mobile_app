@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../layout/custom_preview.xml" value="0.15572916666666667" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_add_dark.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2586050724637681" />
         <entry key="app/src/main/res/layout/activity_menu.xml" value="0.25226449275362317" />
         <entry key="app/src/main/res/layout/album_item_layout.xml" value="0.24592391304347827" />
