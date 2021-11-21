@@ -5,12 +5,13 @@ import androidx.lifecycle.*
 import com.example.vinilos.models.Album
 import com.example.vinilos.repositories.AlbumRepository
 
-class AlbumViewModel(application: Application, albumId: Int): AndroidViewModel(application) {
-    private val albumRepository = AlbumRepository(application)
-    private val id = albumId
-    private val _album = MutableLiveData<Album>()
-    val album: LiveData<Album>
-        get() = _album
+class AlbumsViewModel(application: Application): AndroidViewModel(application) {
+    private val albumsRepository = AlbumRepository(application)
+    var isUser: Boolean = true
+    private val _albums = MutableLiveData<List<Album>>()
+    private var initialAlbums: List<Album> = emptyList()
+    val albums: LiveData<List<Album>>
+        get() = _albums
     private var _isNetworkErrorShown = MutableLiveData<Boolean>(false)
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
@@ -25,20 +26,31 @@ class AlbumViewModel(application: Application, albumId: Int): AndroidViewModel(a
     fun refreshDataFromNetwork() {
         _isLoading.value = true
         _isNetworkErrorShown.value = false
-        albumRepository.refreshAlbum(id, {
-            _album.postValue(it)
+        albumsRepository.refreshData({
+            _albums.postValue(it)
+            initialAlbums = it
             _isLoading.value = false
-        }, {
+        },{
             _isNetworkErrorShown.value = true
             _isLoading.value = false
         })
     }
 
-    class Factory(val app: Application, val albumId: Int) : ViewModelProvider.Factory {
+    fun filterByAlbumName(name: String) {
+        var filteredList = mutableListOf<Album>()
+        for(album in this.initialAlbums) {
+            if(album.name.lowercase().startsWith(name.lowercase())) {
+                filteredList.add(album)
+            }
+        }
+        _albums.postValue(filteredList)
+    }
+
+    class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(AlbumViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(AlbumsViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return AlbumViewModel(app, albumId) as T
+                return AlbumsViewModel(app) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }

@@ -17,16 +17,23 @@ class AlbumServiceAdapter constructor(context: Context): NetworkServiceAdapter(c
             }
     }
 
-    fun getAlbums(onComplete:(resp:List<Album>)->Unit, onError: (error: VolleyError)->Unit){
+    fun getAlbums(onComplete:(resp:List<Album>)->Unit, onError: (error: VolleyError)->Unit) {
         requestQueue.add(getRequest("albums",  { response ->
                 val resp = JSONArray(response)
-                val list = mutableListOf<Album>()
-                for (i in 0 until resp.length()) {
-                    val item = resp.getJSONObject(i)
-                    list.add(i, Album(albumId = item.getInt("id"),name = item.getString("name"), cover = item.getString("cover"), recordLabel = item.getString("recordLabel"), releaseDate = item.getString("releaseDate"), genre = item.getString("genre"), description = item.getString("description")))
-                }
+                val list = Album.fromJSONArray(resp)
                 onComplete(list)
             },
+            {
+                onError(it)
+            }))
+    }
+
+    fun getAlbum(albumId: Int, onComplete:(resp: Album)->Unit, onError: (error: VolleyError)->Unit) {
+        requestQueue.add(getRequest("albums/$albumId",  { response ->
+            val resp = JSONObject(response)
+            val album = Album.fromJSONObject(resp)
+            onComplete(album)
+        },
             {
                 onError(it)
             }))
