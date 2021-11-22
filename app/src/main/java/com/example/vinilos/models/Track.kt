@@ -1,10 +1,13 @@
 package com.example.vinilos.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import org.json.JSONArray
 import org.json.JSONObject
 
+@Entity(tableName = "tracks_table")
 data class Track (
-    val id: Int,
+    @PrimaryKey val id: Int,
     val name: String,
     val duration: String
 ) {

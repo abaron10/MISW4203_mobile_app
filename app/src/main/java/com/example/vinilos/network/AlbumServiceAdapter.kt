@@ -5,6 +5,9 @@ import com.android.volley.VolleyError
 import com.example.vinilos.models.Album
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class AlbumServiceAdapter constructor(context: Context): NetworkServiceAdapter(context)  {
     companion object{
@@ -17,47 +20,46 @@ class AlbumServiceAdapter constructor(context: Context): NetworkServiceAdapter(c
             }
     }
 
-    fun getAlbums(onComplete:(resp:List<Album>)->Unit, onError: (error: VolleyError)->Unit) {
-        requestQueue.add(getRequest("albums",  { response ->
+    suspend fun getAlbums() = suspendCoroutine<List<Album>>{ cont ->
+        requestQueue.add(
+            getRequest("Albums",  { response ->
                 val resp = JSONArray(response)
                 val list = Album.fromJSONArray(resp)
-                onComplete(list)
-            },
-            {
-                onError(it)
-            }))
+                cont.resume(list)
+            }, {
+                cont.resumeWithException(it)
+            })
+        )
     }
 
-    fun getAlbum(albumId: Int, onComplete:(resp: Album)->Unit, onError: (error: VolleyError)->Unit) {
-        requestQueue.add(getRequest("albums/$albumId",  { response ->
-            val resp = JSONObject(response)
-            val album = Album.fromJSONObject(resp)
-            onComplete(album)
-        },
-            {
-                onError(it)
-            }))
+    suspend fun getAlbum(albumId: Int) = suspendCoroutine<Album> { cont ->
+        requestQueue.add(
+            getRequest("albums/$albumId",  { response ->
+                val resp = JSONObject(response)
+                val album = Album.fromJSONObject(resp)
+                cont.resume(album)
+            }, {
+                cont.resumeWithException(it)
+            })
+        )
     }
 
-    fun createAlbum(albumParams: Map<String, String>,
-                    onComplete: (resp: Album) -> Unit,
-                    onError: (error: VolleyError) -> Unit){
-
-        requestQueue.add(postRequest("albums", JSONObject(albumParams), { response ->
-            val createdAlbum = Album(
-                albumId = response.getInt("id"),
-                name = response.getString("name"),
-                cover = response.getString("cover"),
-                recordLabel = response.getString("recordLabel"),
-                releaseDate = response.getString("releaseDate"),
-                genre = response.getString("genre"),
-                description = response.getString("description")
-            )
-
-            onComplete(createdAlbum)
-        },
-            {
-                onError(it)
-            }))
+    suspend fun createAlbum(albumParams: Map<String, String>) = suspendCoroutine<Album> { cont ->
+        requestQueue.add(
+            postRequest("albums", JSONObject(albumParams), { response ->
+                val createdAlbum = Album(
+                    albumId = response.getInt("id"),
+                    name = response.getString("name"),
+                    cover = response.getString("cover"),
+                    recordLabel = response.getString("recordLabel"),
+                    releaseDate = response.getString("releaseDate"),
+                    genre = response.getString("genre"),
+                    description = response.getString("description"))
+                cont.resume(createdAlbum)
+            }, {
+                cont.resumeWithException(it)
+            })
+        )
     }
+
 }

@@ -36,13 +36,13 @@ class CollectorsFragment : Fragment() {
         _binding = FragmentCollectorsBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         val view = binding.root
-        collectorsAdapter = CollectorsAdapter(activity!!.applicationContext)
+        collectorsAdapter = CollectorsAdapter(requireActivity().applicationContext)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         collectorRecyclerView = binding.collectorRecyclerView
-        collectorRecyclerView.layoutManager = LinearLayoutManager(activity!!.applicationContext)
+        collectorRecyclerView.layoutManager = LinearLayoutManager(requireActivity().applicationContext)
         collectorRecyclerView.adapter = collectorsAdapter
         collectorInputText = binding.searchBoxField
         btnTryAgain = binding.btnTryAgain
