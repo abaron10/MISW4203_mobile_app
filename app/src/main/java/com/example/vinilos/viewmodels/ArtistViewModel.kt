@@ -2,9 +2,11 @@ package com.example.vinilos.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.vinilos.models.Album
 import com.example.vinilos.models.Artist
 import com.example.vinilos.repositories.ArtistRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ArtistViewModel(application: Application): AndroidViewModel(application) {
     private val artistRepository = ArtistRepository(application)
@@ -26,14 +28,19 @@ class ArtistViewModel(application: Application): AndroidViewModel(application) {
     fun refreshDataFromNetwork() {
         _isLoading.value = true
         _isNetworkErrorShown.value = false
-        artistRepository.refreshData({
-            _artist.postValue(it)
-            initialArtist = it
-            _isLoading.value = false
-        },{
-            _isNetworkErrorShown.value = true
-            _isLoading.value = false
-        })
+        viewModelScope.launch(Dispatchers.Default) {
+            withContext(Dispatchers.IO){
+                try {
+                    val data = artistRepository.refreshData()
+                    _artist.postValue(data)
+                    initialArtist = data
+                    _isLoading.postValue(false)
+                } catch(e: Exception) {
+                    _isNetworkErrorShown.postValue(true)
+                    _isLoading.postValue(false)
+                }
+            }
+        }
     }
 
     fun filterByArtistName(name: String) {
@@ -47,7 +54,7 @@ class ArtistViewModel(application: Application): AndroidViewModel(application) {
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ArtistViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 return ArtistViewModel(app) as T
