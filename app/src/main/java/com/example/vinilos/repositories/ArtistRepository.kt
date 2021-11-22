@@ -1,14 +1,22 @@
 package com.example.vinilos.repositories
 
 import android.app.Application
-import com.android.volley.VolleyError
+import com.example.vinilos.database.VinylRoomDatabase
 import com.example.vinilos.models.Artist
 import com.example.vinilos.network.ArtistServiceAdapter
 
 class ArtistRepository (val application: Application){
-    fun refreshData(callback: (List<Artist>)->Unit, onError: (VolleyError)->Unit) {
-        ArtistServiceAdapter.getInstance(application).getArtists({
-            callback(it)
-        }, onError)
+    suspend fun refreshData(): List<Artist> {
+        val db = VinylRoomDatabase.getDatabase(application.applicationContext)
+        val cached = db.artistDao().getArtists()
+        return if(cached.isNullOrEmpty()) {
+            val artists = ArtistServiceAdapter.getInstance(application).getArtists()
+            for(artist in artists) {
+                db.artistDao().insert(artist)
+            }
+            artists
+        } else {
+            cached
+        }
     }
 }
