@@ -11,4 +11,5 @@ data class Artist (
     val image: String,
     val description: String,
     val birthDate: String,
-    )
+    var createdAt: Long = System.currentTimeMillis()
+)
