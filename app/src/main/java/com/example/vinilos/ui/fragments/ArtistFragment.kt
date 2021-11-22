@@ -41,13 +41,13 @@ class ArtistFragment : Fragment() {
         _binding = FragmentArtistsBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         val view = binding.root
-        artistAdapter = ArtistAdapter(activity!!.applicationContext)
+        artistAdapter = ArtistAdapter(requireActivity().applicationContext)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         artistRecyclerView = binding.artistRecyclerView
-        artistRecyclerView.layoutManager = GridLayoutManager(activity!!.applicationContext,2)
+        artistRecyclerView.layoutManager = GridLayoutManager(requireActivity().applicationContext,2)
         artistRecyclerView.adapter = artistAdapter
         artistInputText = binding.searchBoxField
         btnTryAgain = binding.btnTryAgain

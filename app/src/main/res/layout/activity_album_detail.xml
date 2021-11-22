@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.AlbumDetailActivity">
+
+    <data>
+        <import type="android.view.View" />
+        <variable name="viewModel" type="com.example.vinilos.viewmodels.AlbumViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/vinilos_dark_gray">
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:isVisible="@{viewModel.isLoading}"
+            layout="@layout/loading_layout"
+            />
+
+        <include
+            android:id="@+id/retry_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:isVisible="@{viewModel.isNetworkErrorShown}"
+            layout="@layout/retry_layout"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.isLoading || viewModel.isNetworkErrorShown ? View.GONE : View.VISIBLE}"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/album_detail_image"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/ic_album_dark"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:imageUri="@{viewModel.album != null ? viewModel.album.cover : ``}"
+                    />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/album_detail_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text='@{viewModel.album.description}'
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/album_detail_release_date"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/album_detail_release_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.album.formattedReleaseDate()}"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/album_detail_authors"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/album_detail_authors"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.album.performersToString()}"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/album_detail_genre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{viewModel.album.genre}'
+                    android:textColor="@color/black"
+                    android:background="@color/vinilos_green"
+                    android:padding="10dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/vinilos_light_gray"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/album_detail_tracks"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/vinilos_light_gray"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    >
+
+                    <Button
+                        android:layout_width="50dp"
+                        android:layout_height="60dp"
+                        app:cornerRadius="25dp"
+                        android:backgroundTint="@color/vinilos_green"
+                        android:textSize="20sp"
+                        android:text="@string/plus"
+                        android:textColor="@color/vinilos_dark_gray"
+                        />
+
+                    <Space
+                        android:layout_width="15dp"
+                        android:layout_height="match_parent"
+                        />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:text="@string/album_detail_add_track"
+                        android:textColor="@color/white"
+                        />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/vinilos_light_gray"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/album_detail_tracks_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/vinilos_light_gray"
+                    android:layout_marginBottom="25dp"
+                    />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

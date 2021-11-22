@@ -15,11 +15,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.vinilos.R
 import com.example.vinilos.adapters.AlbumsAdapter
 import com.example.vinilos.databinding.FragmentAlbumsBinding
 import com.example.vinilos.models.Album
-import com.example.vinilos.viewmodels.AlbumViewModel
+import com.example.vinilos.viewmodels.AlbumsViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
@@ -30,14 +31,15 @@ import com.google.android.material.textfield.TextInputEditText
 fun loadImageWithUri(imageView: ShapeableImageView, imageUri: String) {
     Glide.with(imageView.context).load(
         Uri.parse(imageUri)
-    ).into(imageView)
+    ).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+        .into(imageView)
 }
 
 class AlbumsFragment : Fragment() {
     private var userType: String? = null
     private var _binding: FragmentAlbumsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: AlbumViewModel
+    private lateinit var viewModel: AlbumsViewModel
 
     private lateinit var albumsAdapter: AlbumsAdapter
     private lateinit var albumRecyclerView: RecyclerView
@@ -59,16 +61,17 @@ class AlbumsFragment : Fragment() {
         _binding = FragmentAlbumsBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         val view = binding.root
-        albumsAdapter = AlbumsAdapter(activity!!.applicationContext)
+        albumsAdapter = AlbumsAdapter(requireActivity().applicationContext)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val retryView = binding.retryView
         albumRecyclerView = binding.albumRecyclerView
-        albumRecyclerView.layoutManager = GridLayoutManager(activity!!.applicationContext,2)
+        albumRecyclerView.layoutManager = GridLayoutManager(requireActivity().applicationContext,2)
         albumRecyclerView.adapter = albumsAdapter
         albumInputText = binding.searchBoxField
-        btnTryAgain = binding.btnTryAgain
+        btnTryAgain = retryView.btnTryAgain
         albumInputText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
@@ -95,7 +98,7 @@ class AlbumsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val activity = requireNotNull(this.activity)
-        viewModel = ViewModelProvider(this, AlbumViewModel.Factory(activity.application)).get(AlbumViewModel::class.java)
+        viewModel = ViewModelProvider(this, AlbumsViewModel.Factory(activity.application)).get(AlbumsViewModel::class.java)
         viewModel.isUser = userType?.equals("user") == true
         binding.also {
             it.viewModel = viewModel
@@ -113,10 +116,6 @@ class AlbumsFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * @param userType User tpye.
-         * @return A new instance of fragment AlbumsFragment.
-         */
         @JvmStatic
         fun newInstance(userType: String) =
             AlbumsFragment().apply {

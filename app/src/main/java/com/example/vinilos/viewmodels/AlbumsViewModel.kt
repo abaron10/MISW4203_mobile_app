@@ -2,18 +2,19 @@ package com.example.vinilos.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.vinilos.models.Collector
-import com.example.vinilos.repositories.CollectorRepository
+import com.example.vinilos.models.Album
+import com.example.vinilos.repositories.AlbumRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CollectorViewModel(application: Application): AndroidViewModel(application) {
-    private val collectorsRepository = CollectorRepository(application)
-    private val _collectors = MutableLiveData<List<Collector>>()
-    private var initialCollectors: List<Collector> = emptyList()
-    val collectors: LiveData<List<Collector>>
-        get() = _collectors
+class AlbumsViewModel(application: Application): AndroidViewModel(application) {
+    private val albumsRepository = AlbumRepository(application)
+    var isUser: Boolean = true
+    private val _albums = MutableLiveData<List<Album>>()
+    private var initialAlbums: List<Album> = emptyList()
+    val albums: LiveData<List<Album>>
+        get() = _albums
     private var _isNetworkErrorShown = MutableLiveData<Boolean>(false)
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
@@ -31,9 +32,9 @@ class CollectorViewModel(application: Application): AndroidViewModel(application
         viewModelScope.launch(Dispatchers.Default) {
             withContext(Dispatchers.IO){
                 try {
-                    val data = collectorsRepository.refreshData()
-                    _collectors.postValue(data)
-                    initialCollectors = data
+                    val data = albumsRepository.refreshData()
+                    _albums.postValue(data)
+                    initialAlbums = data
                     _isLoading.postValue(false)
                 } catch(e: Exception) {
                     _isNetworkErrorShown.postValue(true)
@@ -43,21 +44,21 @@ class CollectorViewModel(application: Application): AndroidViewModel(application
         }
     }
 
-    fun filterByCollectorName(name: String) {
-        var filteredList = mutableListOf<Collector>()
-        for(coll in this.initialCollectors) {
-            if(coll.name.lowercase().startsWith(name.lowercase())) {
-                filteredList.add(coll)
+    fun filterByAlbumName(name: String) {
+        var filteredList = mutableListOf<Album>()
+        for(album in this.initialAlbums) {
+            if(album.name.lowercase().startsWith(name.lowercase())) {
+                filteredList.add(album)
             }
         }
-        _collectors.postValue(filteredList)
+        _albums.postValue(filteredList)
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(CollectorViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(AlbumsViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return CollectorViewModel(app) as T
+                return AlbumsViewModel(app) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }

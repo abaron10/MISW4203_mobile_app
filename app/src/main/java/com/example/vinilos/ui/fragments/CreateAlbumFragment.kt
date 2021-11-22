@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.ArrayMap
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,7 +20,7 @@ import java.util.*
 class CreateAlbumFragment : Fragment() {
     private var selectedGenre: String = ""
     private var selectedRecordLabel: String = ""
-    private val validDateRegex = "^([0-2][0-9]|(3)[0-1])(\\/)(((0)[0-9])|((1)[0-2]))(\\/)\\d{4}\$".toRegex()
+    private val validDateRegex = "^(((0)[0-9])|((1)[0-2]))(\\/)([0-2][0-9]|(3)[0-1])(\\/)\\d{4}\$".toRegex()
 
     private lateinit var viewModel: CreateAlbumViewModel
     private lateinit var albumName: EditText
@@ -112,7 +113,7 @@ class CreateAlbumFragment : Fragment() {
         releaseDate.addTextChangedListener(object : TextWatcher {
 
             private var current = ""
-            private val ddmmyyyy = "DDMMYYYY"
+            private val ddmmyyyy = "MMDDYYYY"
             private val cal = Calendar.getInstance()
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -140,18 +141,23 @@ class CreateAlbumFragment : Fragment() {
                         mon = if (mon > currentMon) currentMon else if (mon < 1) currentMon else if (mon > 12) currentMon else mon
                         cal.set(Calendar.MONTH, mon)
                         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-                        year = if (year > currentYear) currentYear else year
+                        year = if (year > currentYear) currentYear else if (year < 1) currentYear else year
                         cal.set(Calendar.YEAR, year)
 
                         val currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 
                         day = if (day > cal.getActualMaximum(Calendar.DATE)) currentDay else if (day > currentDay) currentDay else if (day < 1) currentDay else day
-                        clean = String.format("%02d%02d%02d", day, mon, year)
+                        clean = String.format("%02d%02d%02d", mon, day, year)
                     }
 
-                    clean = String.format("%s/%s/%s", clean.substring(0, 2),
-                        clean.substring(2, 4),
-                        clean.substring(4, 8))
+                    if (clean.length < 8) {
+                        clean += ddmmyyyy.substring(clean.length)
+                    } else {
+                        clean = String.format("%s/%s/%s", clean.substring(0, 2),
+                            clean.substring(2, 4),
+                            clean.substring(4, 8))
+                    }
+
 
                     sel = if (sel < 0) 0 else sel
                     current = clean
@@ -201,14 +207,13 @@ class CreateAlbumFragment : Fragment() {
             }
 
            if(results.all { it }){
-               val albumParams: Map<String, String> = hashMapOf(
-                   "name" to albumName.text.toString(),
-                   "cover" to coverUrl.text.toString(),
-                   "releaseDate" to releaseDate.text.toString(),
-                   "description" to albumDescription.text.toString(),
-                   "genre" to selectedGenre,
-                   "recordLabel" to recordLabel.text.toString()
-               )
+               val albumParams: ArrayMap<String, String> = ArrayMap()
+               albumParams["name"] = albumName.text.toString()
+               albumParams["cover"] = coverUrl.text.toString()
+               albumParams["releaseDate"] = releaseDate.text.toString()
+               albumParams["description"] = albumDescription.text.toString()
+               albumParams["genre"] = selectedGenre
+               albumParams["recordLabel"] = recordLabel.text.toString()
                viewModel.addNewAlbum(albumParams)
            } else {
                Toast.makeText(it.context, "Could not create album. Check input", Toast.LENGTH_SHORT).show()
