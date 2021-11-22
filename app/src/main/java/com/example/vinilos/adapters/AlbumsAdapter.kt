@@ -1,5 +1,6 @@
 package com.example.vinilos.adapters
 
+import android.annotation.SuppressLint
 import com.example.vinilos.R
 import android.content.Context
 import android.content.Intent
@@ -22,6 +23,7 @@ import com.example.vinilos.ui.BaseActivity
 class AlbumsAdapter(var context: Context) : RecyclerView.Adapter<AlbumsAdapter.AlbumViewHolder>() {
 
   var albums: List<Album> = emptyList()
+    @SuppressLint("NotifyDataSetChanged")
     set(value) {
       field = value
       notifyDataSetChanged()

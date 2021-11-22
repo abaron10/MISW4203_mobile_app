@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.vinilos.R
 import com.example.vinilos.adapters.AlbumsAdapter
 import com.example.vinilos.databinding.FragmentAlbumsBinding
@@ -30,7 +31,8 @@ import com.google.android.material.textfield.TextInputEditText
 fun loadImageWithUri(imageView: ShapeableImageView, imageUri: String) {
     Glide.with(imageView.context).load(
         Uri.parse(imageUri)
-    ).into(imageView)
+    ).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+        .into(imageView)
 }
 
 class AlbumsFragment : Fragment() {
@@ -59,14 +61,14 @@ class AlbumsFragment : Fragment() {
         _binding = FragmentAlbumsBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         val view = binding.root
-        albumsAdapter = AlbumsAdapter(activity!!.applicationContext)
+        albumsAdapter = AlbumsAdapter(requireActivity().applicationContext)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val retryView = binding.retryView
         albumRecyclerView = binding.albumRecyclerView
-        albumRecyclerView.layoutManager = GridLayoutManager(activity!!.applicationContext,2)
+        albumRecyclerView.layoutManager = GridLayoutManager(requireActivity().applicationContext,2)
         albumRecyclerView.adapter = albumsAdapter
         albumInputText = binding.searchBoxField
         btnTryAgain = retryView.btnTryAgain

@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragments.AlbumsFragment"
-    android:background="@color/vinilos_dark_gray">
 
     <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/scroll_create_album"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.AlbumsFragment"
+        android:background="@color/vinilos_dark_gray"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:hint="@string/album_genre"
+                android:labelFor="@+id/genre"
                 >
 
                 <AutoCompleteTextView
@@ -117,6 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:hint="@string/album_record_label"
+                android:labelFor="@id/record_label"
                 >
 
                 <AutoCompleteTextView
@@ -139,7 +139,3 @@
 
         </LinearLayout>
     </ScrollView>
-
-
-
-</FrameLayout>

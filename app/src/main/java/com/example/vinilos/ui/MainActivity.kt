@@ -3,6 +3,7 @@ package com.example.vinilos.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.ArrayMap
 import android.view.View
 import android.widget.Button
 import com.example.vinilos.R
@@ -20,11 +21,13 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         btn_sign_as_collector = findViewById(R.id.btn_sign_as_collector)
 
         btn_sign_as_user.setOnClickListener {
-            val extras: HashMap<String, String> = hashMapOf("userType" to "user")
+            val extras: ArrayMap<String, String> = ArrayMap()
+            extras["userType"] = "user"
             goToActivity(MenuActivity::class.java, extras = extras)
         }
         btn_sign_as_collector.setOnClickListener {
-            val extras: HashMap<String, String> = hashMapOf("userType" to "collector")
+            val extras: ArrayMap<String, String> = ArrayMap()
+            extras["userType"] = "collector"
             goToActivity(MenuActivity::class.java, extras = extras)
         }
     }
