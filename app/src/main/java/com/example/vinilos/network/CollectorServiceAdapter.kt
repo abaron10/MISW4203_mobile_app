@@ -5,6 +5,10 @@ import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.example.vinilos.models.Collector
 import org.json.JSONArray
+import org.json.JSONObject
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class CollectorServiceAdapter constructor(context: Context): NetworkServiceAdapter(context)  {
     companion object{
@@ -17,18 +21,20 @@ class CollectorServiceAdapter constructor(context: Context): NetworkServiceAdapt
             }
     }
 
-    fun getCollectors(onComplete:(resp:List<Collector>)->Unit, onError: (error: VolleyError)->Unit){
-        requestQueue.add(getRequest("collectors",  { response ->
+    suspend fun getCollectors() = suspendCoroutine<List<Collector>>{ cont ->
+        requestQueue.add(
+            getRequest("collectors",  { response ->
                 val resp = JSONArray(response)
                 val list = mutableListOf<Collector>()
+                var item: JSONObject
                 for (i in 0 until resp.length()) {
-                    val item = resp.getJSONObject(i)
-                    list.add(i, Collector(collectorId = item.getInt("id"),name = item.getString("name"), telephone = item.getString("telephone"), email = item.getString("email")))
+                    item = resp.getJSONObject(i)
+                    list.add(i, Collector(collectorId = item.getInt("id"),name = item.getString("name"), telephone = item.getString("telephone"), email = item.getString("email"), createdAt = i.toLong()))
                 }
-                onComplete(list)
-            },
-            {
-                onError(it)
-            }))
+                cont.resume(list)
+            }, {
+                cont.resumeWithException(it)
+            })
+        )
     }
 }

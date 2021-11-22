@@ -5,4 +5,5 @@ data class Collector (
     val name: String,
     val telephone: String,
     val email: String,
+    var createdAt: Long = System.currentTimeMillis()
 )
