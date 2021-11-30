@@ -4,10 +4,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scroll_create_album"
+    android:id="@+id/scroll_add_track_album"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.AlbumsFragment"
+    tools:context=".ui.fragments.AddTrackFragment"
     android:background="@color/vinilos_dark_gray"
     >
 
@@ -50,6 +50,7 @@
                 android:layout_height="50dp"
                 android:hint="@string/track_duration"
                 android:background="@color/white"
+                android:inputType="number"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
