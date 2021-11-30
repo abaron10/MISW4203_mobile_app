@@ -169,4 +169,60 @@ class TrackTests {
             ViewAssertions.matches(isDisplayed())
         )
     }
+
+    @Test
+    fun test_create_track_invalid_input() {
+        goToAlbumsViewAsCollector()
+        goToCreateAlbum()
+
+        val albumName = "Test grupo 10 "+ Random.nextInt(0, 10000000)
+        createAlbum(albumName)
+
+        Espresso.onView(withId(R.id.search_box_field)).perform(
+            click(), replaceText(albumName)
+        )
+        Thread.sleep(5000)
+
+        Espresso.onView(
+            withId(R.id.album_recycler_view)
+        ).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click())
+        )
+        Thread.sleep(5000)
+
+        Espresso.onView(
+            withId(R.id.album_add_track)
+        ).perform(click())
+
+        Espresso.onView(withId(R.id.track_name)).perform(
+            click(), replaceText("")
+        )
+
+        Espresso.onView(withId(R.id.track_duration)).perform(
+            click(), replaceText("")
+        )
+
+        Espresso.onView(withId(R.id.btn_add_track)).perform(
+            click()
+        )
+
+        Espresso.onView(
+            CoreMatchers.allOf(
+                withId(R.id.track_name),
+                hasErrorText("Track name cannot be empty")
+            )
+        ).check(
+            ViewAssertions.matches(isDisplayed())
+        )
+
+        Espresso.onView(
+            CoreMatchers.allOf(
+                withId(R.id.track_duration),
+                hasErrorText("Track duration cannot be empty")
+            )
+        ).check(
+            ViewAssertions.matches(isDisplayed())
+        )
+    }
+
 }
