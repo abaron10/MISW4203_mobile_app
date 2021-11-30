@@ -34,4 +34,9 @@
     <string name="add_new_album_button">Add new album button</string>
     <string name="add_new_artist_button">Add new artist button</string>
     <string name="collectors">Collectors</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="track_name">Track name</string>
+    <string name="track_duration">Track duration</string>
+    <string name="add_track">Add track</string>
 </resources>
