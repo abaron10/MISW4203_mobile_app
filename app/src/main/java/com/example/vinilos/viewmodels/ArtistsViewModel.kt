@@ -8,11 +8,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ArtistViewModel(application: Application, artistId: Int): AndroidViewModel(application) {
+class ArtistsViewModel(application: Application): AndroidViewModel(application) {
     private val artistRepository = ArtistRepository(application)
-    private val id = artistId
-    private val _artist = MutableLiveData<Artist>()
-    val artist: LiveData<Artist>
+    private val _artist = MutableLiveData<List<Artist>>()
+    private var initialArtist: List<Artist> = emptyList()
+    val artist: LiveData<List<Artist>>
         get() = _artist
     private var _isNetworkErrorShown = MutableLiveData<Boolean>(false)
     val isNetworkErrorShown: LiveData<Boolean>
@@ -31,8 +31,9 @@ class ArtistViewModel(application: Application, artistId: Int): AndroidViewModel
         viewModelScope.launch(Dispatchers.Default) {
             withContext(Dispatchers.IO){
                 try {
-                    val data = artistRepository.refreshArtist(id)
+                    val data = artistRepository.refreshData()
                     _artist.postValue(data)
+                    initialArtist = data
                     _isLoading.postValue(false)
                 } catch(e: Exception) {
                     _isNetworkErrorShown.postValue(true)
@@ -42,11 +43,21 @@ class ArtistViewModel(application: Application, artistId: Int): AndroidViewModel
         }
     }
 
-    class Factory(val app: Application, val artistId: Int) : ViewModelProvider.Factory {
+    fun filterByArtistName(name: String) {
+        var filteredList = mutableListOf<Artist>()
+        for(artist in this.initialArtist) {
+            if(artist.name.lowercase().startsWith(name.lowercase())) {
+                filteredList.add(artist)
+            }
+        }
+        _artist.postValue(filteredList)
+    }
+
+    class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(ArtistViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(ArtistsViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return ArtistViewModel(app, artistId) as T
+                return ArtistsViewModel(app) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }

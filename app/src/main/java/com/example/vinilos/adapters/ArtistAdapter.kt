@@ -3,6 +3,7 @@ package com.example.vinilos.adapters
 import android.annotation.SuppressLint
 import com.example.vinilos.R
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vinilos.databinding.ArtistItemLayoutBinding
 import com.example.vinilos.models.Artist
+import com.example.vinilos.ui.AlbumDetailActivity
+import com.example.vinilos.ui.ArtistDetailActivity
+import com.example.vinilos.ui.BaseActivity
 
 class ArtistAdapter(var context: Context) : RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder>() {
 
@@ -39,6 +43,14 @@ class ArtistAdapter(var context: Context) : RecyclerView.Adapter<ArtistAdapter.A
     }
     holder.viewDataBinding.root.setOnClickListener {
       Toast.makeText(it.context, artist[position].name, Toast.LENGTH_SHORT).show()
+    }
+    holder.viewDataBinding.root.setOnClickListener {
+      val intent = Intent(context, ArtistDetailActivity::class.java)
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      intent.putExtra(
+        BaseActivity.INTENT_EXTRA_ARTIST_ID, artist[position].artistId
+      )
+      context.startActivity(intent)
     }
   }
 
