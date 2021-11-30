@@ -2,13 +2,20 @@ package com.example.vinilos.ui.fragments
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.ArrayMap
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.vinilos.R
+import com.example.vinilos.viewmodels.AddTrackViewModel
+import com.example.vinilos.viewmodels.CreateAlbumViewModel
 import java.util.*
 
 private const val ALBUM_ID_PARAM = "albumId"
@@ -17,7 +24,27 @@ private const val ALBUM_ID_PARAM = "albumId"
 class AddTrackFragment : Fragment() {
     private var albumId: Int? = null
     private lateinit var trackDuration: EditText
+    private lateinit var trackName: EditText
+    private lateinit var addTrackButton: Button
+    private val validDurationRegex = "^(([0-5][0-9])|[0-6]0)(\\:)([0-5][0-9])\$".toRegex()
 
+    private lateinit var viewModel: AddTrackViewModel
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val activity = requireNotNull(this.activity)
+        viewModel = ViewModelProvider(this, AddTrackViewModel.Factory(activity.application)).get(
+            AddTrackViewModel::class.java)
+
+        viewModel.wasSuccessful.observe(viewLifecycleOwner, {
+            if (it == true) {
+                Toast.makeText(activity.applicationContext, "Track was created successfully", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(activity.applicationContext, "There was an error creating the track", Toast.LENGTH_LONG).show()
+            }
+            this.activity?.onBackPressed()
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +62,14 @@ class AddTrackFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        trackName = view.findViewById(R.id.track_name)
+        setBehaviorEmptyEditText(trackName, "Track name")
+
         trackDuration = view.findViewById(R.id.track_duration)
         setBehaviorTrackDuration()
+
+        addTrackButton = view.findViewById(R.id.btn_add_track)
+        setAddTrackBehavior()
     }
 
     private fun setBehaviorTrackDuration() {
@@ -90,13 +123,67 @@ class AddTrackFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable) {
-                /*
-                if(!validDateRegex.matches(current)){
-                    releaseDate.error = "Date cannot be empty"
+                if(!validDurationRegex.matches(current)){
+                    trackDuration.error = "Track duration cannot be empty"
                 }
-                */
             }
         })
+    }
+
+    private fun setBehaviorEmptyEditText(editText: EditText, name: String){
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                checkEmptyField(editText, name)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+    }
+
+    private fun setAddTrackBehavior(){
+        addTrackButton.setOnClickListener{
+            checkEmptyField(trackName, "Track name")
+            checkTrackDuration()
+
+            val fields: List<EditText> = listOf(trackName, trackDuration)
+            val results: MutableList<Boolean> = mutableListOf()
+            for (f in fields){
+                results.add(hasError(f))
+            }
+
+            if(results.all { it }){
+                val trackParams: ArrayMap<String, String> = ArrayMap()
+                trackParams["name"] = trackName.text.toString()
+                trackParams["duration"] = trackDuration.text.toString()
+
+                this.albumId?.let { albumId -> viewModel.addNewTrack(trackParams, albumId) }
+            } else {
+                Toast.makeText(it.context, "Could not create album. Check input", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun checkEmptyField(editText: EditText, name: String){
+        if(TextUtils.isEmpty(editText.text)){
+            editText.error = "$name cannot be empty"
+        }
+    }
+
+    private fun checkTrackDuration(){
+        if(!validDurationRegex.matches(trackDuration.text)){
+            trackDuration.error = "Track duration cannot be empty"
+        }
+    }
+
+    private fun hasError(editText: EditText): Boolean {
+        if (TextUtils.isEmpty(editText.error)){
+            return true
+        }
+        return false
     }
 
     companion object {
