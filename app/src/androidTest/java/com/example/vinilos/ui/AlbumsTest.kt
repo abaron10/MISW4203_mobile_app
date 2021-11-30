@@ -227,7 +227,7 @@ class AlbumsTest {
         goToAlbumsViewAsCollector()
         goToCreateAlbum()
 
-        val albumName = "Test grupo 10 "+ Random.nextInt(0, 100)
+        val albumName = "Test grupo 10 "+ Random.nextInt(0, 10000000)
 
         Espresso.onView(ViewMatchers.withId(R.id.album_name)).perform(
             click(), replaceText(albumName)
@@ -277,13 +277,14 @@ class AlbumsTest {
             click()
         )
 
-        Thread.sleep(5000);
+        Thread.sleep(5000)
         goToAlbumsViewAsCollector()
+        Thread.sleep(5000)
 
         Espresso.onView(ViewMatchers.withId(R.id.search_box_field)).perform(
             click(), replaceText(albumName)
         )
-        Thread.sleep(5000);
+        Thread.sleep(5000)
         Espresso.onView(
             CoreMatchers.allOf(
                 ViewMatchers.withId(R.id.album_item_name),

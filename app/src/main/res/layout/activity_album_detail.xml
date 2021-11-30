@@ -10,6 +10,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/vinilos_dark_gray">
@@ -186,6 +187,7 @@
                     >
 
                     <Button
+                        android:id="@+id/album_add_track"
                         android:layout_width="50dp"
                         android:layout_height="60dp"
                         app:cornerRadius="25dp"
