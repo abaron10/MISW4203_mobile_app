@@ -39,4 +39,6 @@
     <string name="track_name">Track name</string>
     <string name="track_duration">Track duration</string>
     <string name="add_track">Add track</string>
+    <string name="contacto">Contacto</string>
+    <string name="favorite_performers">Favorite performers</string>
 </resources>
