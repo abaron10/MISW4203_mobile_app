@@ -14,7 +14,7 @@ import com.example.vinilos.models.Album
 import com.example.vinilos.ui.fragments.AddTrackFragment
 import com.example.vinilos.viewmodels.AlbumViewModel
 
-class AlbumDetailActivity : AppCompatActivity() {
+class AlbumDetailActivity : BaseActivity() {
     private var albumId: Int = 0
     private var _binding: ActivityAlbumDetailBinding? = null
     private val binding get() = _binding!!

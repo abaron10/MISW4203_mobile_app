@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.ArtistDetailActivity">
+
+    <data>
+        <import type="android.view.View" />
+        <variable name="viewModel" type="com.example.vinilos.viewmodels.ArtistViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/vinilos_dark_gray">
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:isVisible="@{viewModel.isLoading}"
+            layout="@layout/loading_layout"
+            />
+
+        <include
+            android:id="@+id/retry_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:isVisible="@{viewModel.isNetworkErrorShown}"
+            layout="@layout/retry_layout"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.isLoading || viewModel.isNetworkErrorShown ? View.GONE : View.VISIBLE}"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/artist_detail_image"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/ic_album_dark"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:imageUri="@{viewModel.artist != null ? viewModel.artist.image : ``}"
+                    />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <TextView
+                    android:id="@+id/artist_detail_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.artist != null ? viewModel.artist.name : ``}"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <TextView
+                    android:background="@color/vinilos_light_gray"
+                    android:padding="10dp"
+                    android:id="@+id/artist_detail_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.artist != null ? viewModel.artist.description : ``}"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
