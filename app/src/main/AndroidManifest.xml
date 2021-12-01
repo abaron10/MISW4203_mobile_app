@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Vinilos">
         <activity
+            android:name=".ui.CollectorDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ArtistDetailActivity"
             android:exported="false" />
         <activity

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.CollectorDetailActivity">
+
+    <data>
+        <import type="android.view.View" />
+        <variable name="viewModel" type="com.example.vinilos.viewmodels.CollectorDetailViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/vinilos_dark_gray">
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:isVisible="@{viewModel.isLoading}"
+            layout="@layout/loading_layout"
+            />
+
+        <include
+            android:id="@+id/retry_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:isVisible="@{viewModel.isNetworkErrorShown}"
+            layout="@layout/retry_layout"
+            />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.isLoading || viewModel.isNetworkErrorShown ? View.GONE : View.VISIBLE}"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/collector_detail_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.collector != null ? viewModel.collector.name : ``}"
+                    android:textSize="30sp"
+                    android:textColor="@color/white"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <TextView
+                    android:id="@+id/collector_detail_contacto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacto"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    />
+
+                <TextView
+                    android:id="@+id/collector_detail_telephone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.collector != null ? viewModel.collector.telephone : ``}"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    />
+
+                <TextView
+                    android:id="@+id/collector_detail_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.collector != null ? viewModel.collector.email : ``}"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
