@@ -1,0 +1,16 @@
+***************
+*** 58,63 ****
+          }
+          viewModel.album.observe(this, Observer<Album> {
+              it.apply {
+                  tracksAdapter.tracks = this.tracks
+              }
+          })
+--- 58,64 ----
+          }
+          viewModel.album.observe(this, Observer<Album> {
+              it.apply {
++                 title = this.name
+                  tracksAdapter.tracks = this.tracks
+              }
+          })

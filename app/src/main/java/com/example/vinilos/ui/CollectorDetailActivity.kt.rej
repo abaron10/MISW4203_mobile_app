@@ -1,0 +1,21 @@
+***************
+*** 34,40 ****
+          binding.also {
+              it.viewModel = viewModel
+          }
+-         viewModel.collector.observe(this, Observer<Collector> {i})
+      }
+  
+      override fun onDestroy() {
+--- 34,44 ----
+          binding.also {
+              it.viewModel = viewModel
+          }
++         viewModel.collector.observe(this, Observer<Collector> {
++             it.apply {
++                 title = this.name
++             }
++         })
+      }
+  
+      override fun onDestroy() {

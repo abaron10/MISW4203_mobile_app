@@ -1,0 +1,21 @@
+***************
+*** 34,40 ****
+          binding.also {
+              it.viewModel = viewModel
+          }
+-         viewModel.artist.observe(this, Observer<Artist> {})
+      }
+  
+      override fun onDestroy() {
+--- 34,44 ----
+          binding.also {
+              it.viewModel = viewModel
+          }
++         viewModel.artist.observe(this, Observer<Artist> {
++             it.apply {
++                 title = this.name
++             }
++         })
+      }
+  
+      override fun onDestroy() {
