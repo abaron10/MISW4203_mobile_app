@@ -45,7 +45,6 @@ class CollectorDetailActivity : BaseActivity() {
         super.onDestroy()
         _binding = null
     }
-
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
