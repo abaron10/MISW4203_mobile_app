@@ -31,8 +31,8 @@
     <string name="album_detail_tracks">Tracks</string>
     <string name="plus">+</string>
     <string name="album_detail_add_track">Add track</string>
-    <string name="add_new_album_button">Add new album button</string>
-    <string name="add_new_artist_button">Add new artist button</string>
+    <string name="add_new_album_button">Add new album</string>
+    <string name="add_new_artist_button">Add new artist</string>
     <string name="collectors">Collectors</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
