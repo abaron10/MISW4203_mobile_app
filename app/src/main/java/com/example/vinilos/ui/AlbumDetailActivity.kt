@@ -58,7 +58,6 @@ class AlbumDetailActivity : BaseActivity() {
         }
         viewModel.album.observe(this, Observer<Album> {
             it.apply {
-                title = this.name
                 tracksAdapter.tracks = this.tracks
             }
         })
