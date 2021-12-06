@@ -15,4 +15,7 @@ interface AlbumDAO {
 
     @Query("DELETE FROM albums_table")
     suspend fun deleteAll(): Int
+
+    @Query("DELETE FROM albums_table WHERE albumId = :id")
+    suspend fun deleteAlbum(id: Int): Int
 }

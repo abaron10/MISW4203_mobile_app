@@ -1,8 +1,6 @@
 package com.example.vinilos.network
 
 import android.content.Context
-import com.android.volley.Response
-import com.android.volley.VolleyError
 import com.example.vinilos.models.Collector
 import org.json.JSONArray
 import org.json.JSONObject
@@ -32,6 +30,18 @@ class CollectorServiceAdapter constructor(context: Context): NetworkServiceAdapt
                     list.add(i, Collector(collectorId = item.getInt("id"),name = item.getString("name"), telephone = item.getString("telephone"), email = item.getString("email"), createdAt = i.toLong()))
                 }
                 cont.resume(list)
+            }, {
+                cont.resumeWithException(it)
+            })
+        )
+    }
+
+    suspend fun getCollector(collectorId: Int) = suspendCoroutine<Collector> { cont ->
+        requestQueue.add(
+            getRequest("collectors/$collectorId",  { response ->
+                val item = JSONObject(response)
+                val collector = Collector(collectorId = item.getInt("id"),name = item.getString("name"), telephone = item.getString("telephone"), email = item.getString("email"))
+                cont.resume(collector)
             }, {
                 cont.resumeWithException(it)
             })

@@ -2,18 +2,18 @@ package com.example.vinilos.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.vinilos.models.Artist
-import com.example.vinilos.repositories.ArtistRepository
+import com.example.vinilos.models.Collector
+import com.example.vinilos.repositories.CollectorRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ArtistViewModel(application: Application, artistId: Int): AndroidViewModel(application) {
-    private val artistRepository = ArtistRepository(application)
-    private val id = artistId
-    private val _artist = MutableLiveData<Artist>()
-    val artist: LiveData<Artist>
-        get() = _artist
+class CollectorDetailViewModel(application: Application, collectorId: Int): AndroidViewModel(application) {
+    private val collectorRepository = CollectorRepository(application)
+    private val id = collectorId
+    private val _collector = MutableLiveData<Collector>()
+    val collector: LiveData<Collector>
+        get() = _collector
     private var _isNetworkErrorShown = MutableLiveData<Boolean>(false)
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
@@ -31,8 +31,8 @@ class ArtistViewModel(application: Application, artistId: Int): AndroidViewModel
         viewModelScope.launch(Dispatchers.Default) {
             withContext(Dispatchers.IO){
                 try {
-                    val data = artistRepository.refreshArtist(id)
-                    _artist.postValue(data)
+                    val data = collectorRepository.refreshCollector(id)
+                    _collector.postValue(data)
                     _isLoading.postValue(false)
                 } catch(e: Exception) {
                     _isNetworkErrorShown.postValue(true)
@@ -42,11 +42,11 @@ class ArtistViewModel(application: Application, artistId: Int): AndroidViewModel
         }
     }
 
-    class Factory(val app: Application, val artistId: Int) : ViewModelProvider.Factory {
+    class Factory(val app: Application, val collectorId: Int) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(ArtistViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(CollectorDetailViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return ArtistViewModel(app, artistId) as T
+                return CollectorDetailViewModel(app, collectorId) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }

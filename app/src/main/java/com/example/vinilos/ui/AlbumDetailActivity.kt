@@ -2,16 +2,19 @@ package com.example.vinilos.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.vinilos.R
 import com.example.vinilos.adapters.AlbumTracksAdapter
 import com.example.vinilos.databinding.ActivityAlbumDetailBinding
 import com.example.vinilos.models.Album
+import com.example.vinilos.ui.fragments.AddTrackFragment
 import com.example.vinilos.viewmodels.AlbumViewModel
 
-class AlbumDetailActivity : AppCompatActivity() {
+class AlbumDetailActivity : BaseActivity() {
     private var albumId: Int = 0
     private var _binding: ActivityAlbumDetailBinding? = null
     private val binding get() = _binding!!
@@ -19,6 +22,8 @@ class AlbumDetailActivity : AppCompatActivity() {
 
     private lateinit var tracksAdapter: AlbumTracksAdapter
     private lateinit var tracksRecyclerView: RecyclerView
+    private lateinit var addTrackButton: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +58,17 @@ class AlbumDetailActivity : AppCompatActivity() {
         }
         viewModel.album.observe(this, Observer<Album> {
             it.apply {
-                title = this.name
                 tracksAdapter.tracks = this.tracks
             }
         })
+
+        addTrackButton = findViewById(R.id.album_add_track)
+        addTrackButton.setOnClickListener {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.constraint_layout, AddTrackFragment.newInstance(this.albumId))
+            transaction.disallowAddToBackStack()
+            transaction.commit()
+        }
     }
 
     override fun onDestroy() {

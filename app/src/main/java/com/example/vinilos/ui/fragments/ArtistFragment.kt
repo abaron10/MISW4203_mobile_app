@@ -1,33 +1,28 @@
 package com.example.vinilos.ui.fragments
 
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.vinilos.adapters.ArtistAdapter
 import com.example.vinilos.databinding.FragmentArtistsBinding
 import com.example.vinilos.models.Artist
-import com.example.vinilos.viewmodels.ArtistViewModel
+import com.example.vinilos.viewmodels.ArtistsViewModel
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 
 
 class ArtistFragment : Fragment() {
     private var _binding: FragmentArtistsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: ArtistViewModel
+    private lateinit var viewModel: ArtistsViewModel
 
     private lateinit var artistAdapter: ArtistAdapter
     private lateinit var artistRecyclerView: RecyclerView
@@ -69,7 +64,7 @@ class ArtistFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val activity = requireNotNull(this.activity)
-        viewModel = ViewModelProvider(this, ArtistViewModel.Factory(activity.application)).get(ArtistViewModel::class.java)
+        viewModel = ViewModelProvider(this, ArtistsViewModel.Factory(activity.application)).get(ArtistsViewModel::class.java)
         binding.also {
             it.viewModel = viewModel
         }
