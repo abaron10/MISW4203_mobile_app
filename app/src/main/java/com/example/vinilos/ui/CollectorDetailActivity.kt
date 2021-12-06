@@ -34,11 +34,7 @@ class CollectorDetailActivity : BaseActivity() {
         binding.also {
             it.viewModel = viewModel
         }
-        viewModel.collector.observe(this, Observer<Collector> {
-            it.apply {
-                title = this.name
-            }
-        })
+        viewModel.collector.observe(this, Observer<Collector> { })
     }
 
     override fun onDestroy() {

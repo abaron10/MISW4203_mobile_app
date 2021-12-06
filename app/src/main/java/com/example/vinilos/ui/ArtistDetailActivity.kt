@@ -34,11 +34,7 @@ class ArtistDetailActivity : BaseActivity() {
         binding.also {
             it.viewModel = viewModel
         }
-        viewModel.artist.observe(this, Observer<Artist> {
-            it.apply {
-                title = this.name
-            }
-        })
+        viewModel.artist.observe(this, Observer<Artist> {})
     }
 
     override fun onDestroy() {
